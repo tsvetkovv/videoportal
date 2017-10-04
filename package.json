@@ -1,0 +1,13 @@
+{
+  "name": "videoportal",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Tsvetkovv/videoportal.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
