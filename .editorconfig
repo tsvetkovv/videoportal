@@ -9,17 +9,12 @@ root = true
 # Change these settings to your own preference
 indent_style = space
 indent_size = 2
-quote_type = single
 
 # We recommend you to keep these unchanged
+end_of_line = lf
 charset = utf-8
-end_of_line = crlf
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.md]
-max_line_length = 0
-trim_trailing_whitespace = false
-
-[COMMIT_EDITMSG]
-max_line_length = 0
+# editorconfig-tools is unable to ignore longs strings or urls
+max_line_length = null
