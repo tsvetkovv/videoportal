@@ -31,7 +31,6 @@ export const renameFile = (source, target) =>
 export const copyFile = (source, target) =>
   new Promise((resolve, reject) => {
     let cbCalled = false;
-
     function done(err) {
       if (!cbCalled) {
         cbCalled = true;
