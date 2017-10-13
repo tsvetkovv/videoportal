@@ -1,17 +1,13 @@
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
 
-const NewsItemType = new ObjectType({
+const NewsItemType = new GraphQLObjectType({
   name: 'NewsItem',
   fields: {
-    title: { type: new NonNull(StringType) },
-    link: { type: new NonNull(StringType) },
-    author: { type: StringType },
-    pubDate: { type: new NonNull(StringType) },
-    content: { type: StringType },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    link: { type: new GraphQLNonNull(GraphQLString) },
+    author: { type: GraphQLString },
+    pubDate: { type: new GraphQLNonNull(GraphQLString) },
+    content: { type: GraphQLString },
   },
 });
 
