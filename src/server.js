@@ -20,7 +20,7 @@ import models from './data/models';
 import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
-import { setRuntimeVariable } from './actions/runtime';
+import { setRuntimeVariable } from './store/runtime/action';
 import config from './config';
 
 const app = express();
@@ -51,7 +51,7 @@ app.use(
   }),
 );
 app.use((req, res, next) => {
-  const token = req.cookies['id-token'];
+  const token = req.cookies.id_token;
   if (token) {
     try {
       req.user = jwt.verify(token, config.auth.jwt.secret); // eslint-disable-line no-param-reassign

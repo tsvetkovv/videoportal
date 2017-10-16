@@ -8,36 +8,32 @@ class RegisterForm extends Component {
     onSubmit: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
+  state = {
+    username: '',
+    email: '',
+    password: '',
+  };
 
-    this.state = { username: '', email: '', password: '' };
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleUsernameChange(e) {
+  handleUsernameChange = e => {
     this.setState({ username: e.target.value });
-  }
+  };
 
-  handleEmailChange(e) {
+  handleEmailChange = e => {
     this.setState({ email: e.target.value });
-  }
+  };
 
-  handlePasswordChange(e) {
+  handlePasswordChange = e => {
     this.setState({ password: e.target.value });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const { username, email, password } = this.state;
     if (password.length < 8) {
       throw new Error('Password must be at least 8 characters long');
     }
     this.props.onSubmit(username, email, password);
-  }
+  };
 
   render() {
     const { username, email, password } = this.state;

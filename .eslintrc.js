@@ -9,17 +9,17 @@ module.exports = {
     'plugin:css-modules/recommended',
     'prettier',
     'prettier/flowtype',
-    'prettier/react'
+    'prettier/react',
   ],
 
   plugins: ['flowtype', 'css-modules', 'prettier'],
 
   globals: {
-    __DEV__: true
+    __DEV__: true,
   },
 
   env: {
-    browser: true
+    browser: true,
   },
 
   rules: {
@@ -32,7 +32,7 @@ module.exports = {
     'no-console': [
       'error',
       {
-        allow: ['warn', 'error', 'info']
+        allow: ['warn', 'error', 'info'],
       },
     ],
 
@@ -56,7 +56,7 @@ module.exports = {
       {
         // https://github.com/prettier/prettier#options
         singleQuote: true,
-        trailingComma: 'all'
+        trailingComma: 'all',
       },
     ],
   },
@@ -66,7 +66,7 @@ module.exports = {
     // https://github.com/benmosher/eslint-plugin-import/tree/master/resolvers
     'import/resolver': {
       node: {
-        moduleDirectory: ['node_modules', 'src']
+        moduleDirectory: ['node_modules', 'src'],
       },
     },
   },

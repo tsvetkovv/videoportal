@@ -6,13 +6,14 @@ module.exports = {
       'env',
       {
         targets: {
-          node: 'current'
+          node: 'current',
         },
       },
     ],
     'stage-2',
     'flow',
-    'react'
+    'react',
   ],
-  ignore: ['node_modules', 'build']
+  plugins: ['transform-decorators-legacy', 'transform-class-properties'],
+  ignore: ['node_modules', 'build'],
 };

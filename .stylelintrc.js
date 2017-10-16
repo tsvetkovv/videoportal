@@ -8,7 +8,7 @@ module.exports = {
   plugins: [
     // stylelint plugin to sort CSS rules content with specified order
     // https://github.com/hudochenkov/stylelint-order
-    'stylelint-order'
+    'stylelint-order',
   ],
 
   rules: {
@@ -18,7 +18,7 @@ module.exports = {
         ignoreProperties: [
           // CSS Modules composition
           // https://github.com/css-modules/css-modules#composition
-          'composes'
+          'composes',
         ],
       },
     ],
@@ -29,7 +29,7 @@ module.exports = {
         ignorePseudoClasses: [
           // CSS Modules :global scope
           // https://github.com/css-modules/css-modules#exceptions
-          'global'
+          'global',
         ],
       },
     ],
@@ -43,10 +43,10 @@ module.exports = {
       'dollar-variables',
       'declarations',
       'at-rules',
-      'rules'
+      'rules',
     ],
 
     // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
-    'order/properties-order': []
+    'order/properties-order': [],
   },
 };

@@ -77,7 +77,8 @@ const config = {
               {
                 targets: {
                   browsers: pkg.browserslist,
-                  forceAllTransforms: !isDebug, // for UglifyJS
+                  forceAllTransforms: !isDebug, // for UglifyJS,
+                  node: 'current',
                 },
                 modules: false,
                 useBuiltIns: false,
@@ -95,6 +96,8 @@ const config = {
             ['react', { development: isDebug }],
           ],
           plugins: [
+            'transform-decorators-legacy',
+            'transform-class-properties',
             // Treat React JSX elements as value types and hoist them to the highest scope
             // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
             ...(isDebug ? ['transform-react-constant-elements'] : []),

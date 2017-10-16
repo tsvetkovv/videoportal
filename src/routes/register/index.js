@@ -16,7 +16,9 @@ async function onSubmit(username, email, password) {
        mutation {
         userRegister(username: "${username}", email: "${email}", password: "${password}") {
            user {
-             id
+             id,
+             username,
+             email
            },
           errors {
             message,
@@ -40,7 +42,7 @@ function action() {
     title,
     component: (
       <Layout>
-        <Register title={title} onSubmit={onSubmit} />
+        <Register title={title} />
       </Layout>
     ),
   };
