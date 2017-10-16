@@ -5,30 +5,27 @@ import s from './Home.css';
 
 class Home extends React.Component {
   static propTypes = {
-    news: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        link: PropTypes.string.isRequired,
-        content: PropTypes.string,
-      }),
-    ).isRequired,
+    homeData: PropTypes.any,
   };
 
   render() {
+    const { homeData: { categories } } = this.props;
+
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>React.js News</h1>
-          {this.props.news.map(item => (
-            <article key={item.link} className={s.newsItem}>
-              <h1 className={s.newsTitle}>
-                <a href={item.link}>{item.title}</a>
-              </h1>
-              <div
-                className={s.newsDesc}
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              />
+          {categories.map(category => (
+            <article key={category.title} className={s.newsItem}>
+              <h1 className={s.newsTitle}>{category.title}</h1>
+              <div className={s.videosContainer}>
+                {category.content.map(video => (
+                  <div className={s.video}>
+                    <div className={s.videoSrc}/>
+                    <a>{video.title}</a>
+                    <div>{video.author}</div>
+                  </div>
+                ))}
+              </div>
             </article>
           ))}
         </div>

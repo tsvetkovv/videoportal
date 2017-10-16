@@ -19,6 +19,26 @@
   font-size: 1.5rem;
 }
 
+.videosContainer {
+  display: flex;
+}
+
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.videoSrc {
+  width: 210px;
+  height: 118px;
+  background: green;
+}
+
 .newsDesc {
   h1,
   h2,

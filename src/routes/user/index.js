@@ -1,16 +1,16 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import Contact from './Contact';
+import User from './User';
 
 const title = 'Contact Us';
 
 function action() {
   return {
-    chunks: ['contact'],
+    chunks: ['user'],
     title,
     component: (
       <Layout>
-        <Contact title={title} />
+        <User title={title} />
       </Layout>
     ),
   };
