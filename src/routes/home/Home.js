@@ -5,7 +5,21 @@ import s from './Home.css';
 
 class Home extends React.Component {
   static propTypes = {
-    homeData: PropTypes.any,
+    homeData: PropTypes.shape({
+      categories: PropTypes.arrayOf(
+        PropTypes.shape({
+          content: PropTypes.arrayOf(
+            PropTypes.shape({
+              title: PropTypes.string.isRequired,
+              url: PropTypes.string.isRequired,
+              author: PropTypes.string.isRequired,
+              rating: PropTypes.number.isRequired,
+            }),
+          ),
+          title: PropTypes.string.isRequired,
+        }),
+      ),
+    }).isRequired,
   };
 
   render() {
@@ -20,7 +34,7 @@ class Home extends React.Component {
               <div className={s.videosContainer}>
                 {category.content.map(video => (
                   <div className={s.video}>
-                    <div className={s.videoSrc}/>
+                    <div className={s.videoSrc} />
                     <a>{video.title}</a>
                     <div>{video.author}</div>
                   </div>

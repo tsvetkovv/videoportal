@@ -1,18 +1,20 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import Register from './Register';
+import {
+  registerUserRequest,
+  registerUserSuccess,
+} from '../../store/user/action';
 
 const title = 'New User Registration';
 
-async function onSubmit(username, email, password) {
-  const resp = await fetch('/graphql', {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: `
+function registerUserCreator(fetch, dispatch) {
+  return async (username, email, password) => {
+    dispatch(registerUserRequest());
+
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
        mutation {
         userRegister(username: "${username}", email: "${email}", password: "${password}") {
            user {
@@ -27,22 +29,29 @@ async function onSubmit(username, email, password) {
         }
       }
       `,
-    }),
-    credentials: 'include',
-  });
-  const { data } = await resp.json();
-  if (data.id) {
-    // Redirect
-  }
-}
+      }),
+      credentials: 'include',
+    });
 
-function action() {
+    const { data: { userRegister: { errors } } } = await resp.json();
+
+    if (errors.length) {
+      console.error(errors);
+      return;
+    }
+
+    dispatch(registerUserSuccess());
+  };
+}
+function action({ fetch, store: { dispatch } }) {
+  const handleRegisterUser = registerUserCreator(fetch, dispatch);
+
   return {
     chunks: ['register'],
     title,
     component: (
       <Layout>
-        <Register title={title} />
+        <Register title={title} registerUser={handleRegisterUser} />
       </Layout>
     ),
   };

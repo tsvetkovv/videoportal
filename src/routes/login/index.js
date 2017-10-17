@@ -1,22 +1,23 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import Login from './Login';
+import { loginUserRequest, loginUserSuccess } from '../../store/user/action';
 
 const title = 'Log In';
 
-async function onSubmit(usernameOrEmail, password) {
-  const resp = await fetch('/graphql', {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: `
-        mutation {
+function loginUserActionCreator(fetch, dispatch) {
+  return async (usernameOrEmail, password) => {
+    dispatch(loginUserRequest());
+
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+       mutation {
           userLogin(usernameOrEmail: "${usernameOrEmail}", password: "${password}") {
             user {
-              id
+              id,
+              username,
+              email
             }
             errors {
               message
@@ -25,16 +26,30 @@ async function onSubmit(usernameOrEmail, password) {
           }
         }
       `,
-    }),
-    credentials: 'include',
-  });
-  const { data } = await resp.json();
-  if (data.id) {
-    // todo Redirect
-  }
+      }),
+      credentials: 'include',
+    });
+
+    const { data } = await resp.json();
+    const { userLogin: { user, errors } } = data;
+    if (errors.length) {
+      console.error(errors);
+      return;
+    }
+
+    dispatch(
+      loginUserSuccess({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      }),
+    );
+  };
 }
 
-async function action() {
+function action({ fetch, store: { dispatch } }) {
+  const onSubmit = loginUserActionCreator(fetch, dispatch);
+
   return {
     chunks: ['login'],
     title,

@@ -1,5 +1,5 @@
 import { createReducer } from '../utils';
-import { REGISTER_USER_SUCCESS } from './action';
+import { LOGIN_USER_SUCCESS } from './action';
 
 const initialState = {
   id: null,
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 const actionHandlers = {
-  [REGISTER_USER_SUCCESS]: (state, { payload: { id, username, email } }) => ({
+  [LOGIN_USER_SUCCESS]: (state, { payload: { id, username, email } }) => ({
     ...state,
     id,
     username,
