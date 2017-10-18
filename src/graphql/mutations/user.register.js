@@ -6,7 +6,7 @@ import {
 import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
-import { User } from '../models';
+import { User } from '../../mongoose/models';
 import { auth } from '../../config';
 
 const outputType = new GraphQLObjectType({
@@ -36,7 +36,7 @@ const userRegister = {
     }
 
     // check to see if there's already a user with that email
-    const count = await User.count({ where: { email } });
+    const count = await User.count({ email });
     if (count > 0) {
       errors.push({
         key: 'email',

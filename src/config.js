@@ -21,7 +21,9 @@ module.exports = {
   },
 
   // Database
-  databaseUrl: process.env.DATABASE_URL || 'sqlite:database.sqlite',
+  databaseUrl:
+    process.env.DATABASE_URL ||
+    'mongodb://admin:admin@ds111124.mlab.com:11124/videoportal',
 
   // Web analytics
   analytics: {

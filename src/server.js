@@ -9,6 +9,7 @@ import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
+import mongoose from 'mongoose';
 import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
@@ -16,8 +17,8 @@ import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
 import passport from './passport';
 import router from './router';
-import models from './data/models';
-import schema from './data/schema';
+// import models from './data/models';
+import schema from './graphql/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './store/runtime/action';
@@ -225,14 +226,27 @@ app.use((err, req, res, next) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch(err => console.error(err.stack));
-if (!module.hot) {
-  promise.then(() => {
+
+//
+// starting mongoose
+//
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.databaseUrl);
+
+const db = mongoose.connection;
+db.on('error', () => {
+  console.error('---FAILED to connect to mongoose');
+});
+
+db.once('open', () => {
+  console.info('Connected to mongoose');
+  if (!module.hot) {
     app.listen(config.port, () => {
       console.info(`The server is running at http://localhost:${config.port}/`);
     });
-  });
-}
+  }
+});
 
 //
 // Hot Module Replacement

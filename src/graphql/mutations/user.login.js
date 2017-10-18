@@ -6,7 +6,7 @@ import {
 import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
-import { User } from '../models';
+import { User } from '../../mongoose/models';
 import { auth } from '../../config';
 
 const outputType = new GraphQLObjectType({
