@@ -28,6 +28,42 @@ async function action({ fetch }) {
             rating: 4.6,
             url: 'bbb',
           },
+          {
+            title: 'video1',
+            author: 'Alena',
+            rating: 4.5,
+            url: 'aaa',
+          },
+          {
+            title: 'video2',
+            author: 'Viktor',
+            rating: 4.6,
+            url: 'bbb',
+          },
+          {
+            title: 'video1',
+            author: 'Alena',
+            rating: 4.5,
+            url: 'aaa',
+          },
+          {
+            title: 'video2',
+            author: 'Viktor',
+            rating: 4.6,
+            url: 'bbb',
+          },
+          {
+            title: 'video1',
+            author: 'Alena',
+            rating: 4.5,
+            url: 'aaa',
+          },
+          {
+            title: 'video2',
+            author: 'Viktor',
+            rating: 4.6,
+            url: 'bbb',
+          },
         ],
       },
       {

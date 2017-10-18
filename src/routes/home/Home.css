@@ -21,12 +21,14 @@
 
 .videosContainer {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .video {
   display: flex;
   flex-direction: column;
   margin-right: 20px;
+  padding-bottom: 20px;
 
   &:last-of-type {
     margin-right: 0;

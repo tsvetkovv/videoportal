@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
+import Link from '../../components/Link';
 
 class Home extends React.Component {
   static propTypes = {
@@ -36,7 +37,7 @@ class Home extends React.Component {
                   <div className={s.video}>
                     <div className={s.videoSrc} />
                     <a>{video.title}</a>
-                    <div>{video.author}</div>
+                    <Link to="/user">{video.author}</Link>
                   </div>
                 ))}
               </div>

@@ -12,7 +12,7 @@ const routes = {
     },
     {
       path: '/user',
-      load: () => import(/* webpackChunkName: 'contact' */ './user'),
+      load: () => import(/* webpackChunkName: 'user' */ './user'),
     },
     {
       path: '/login',
