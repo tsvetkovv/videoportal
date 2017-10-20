@@ -8,6 +8,7 @@ import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
 import { auth } from '../../config';
+import { parseErrors } from '../../mongoose/helpers';
 
 const outputType = new GraphQLObjectType({
   name: 'userRegister',
@@ -25,7 +26,7 @@ const userRegister = {
     password: { type: new NonNull(StringType) },
   },
   resolve: async (source, { username, email, password }) => {
-    const errors = [];
+    let errors = [];
     let user = null;
 
     if (password.length < 8) {
@@ -45,16 +46,21 @@ const userRegister = {
     }
 
     if (count === 0 && errors.length === 0) {
-      const createUser = await User.create({
+      const u = new User({
         username,
         email: email.toLowerCase(),
         password: User.generateHash(password),
       });
 
-      user = createUser.dataValues;
-      user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
-        expiresIn: auth.jwt.expires,
-      });
+      try {
+        await u.save();
+        user = u.toObject();
+        user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
+          expiresIn: auth.jwt.expires,
+        });
+      } catch (err) {
+        errors = errors.concat(parseErrors(err));
+      }
     }
 
     return {

@@ -233,20 +233,15 @@ app.use((err, req, res, next) => {
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.databaseUrl);
-
-const db = mongoose.connection;
-db.on('error', () => {
-  console.error('---FAILED to connect to mongoose');
+mongoose.connection.on('error', err => {
+  console.info(err);
 });
 
-db.once('open', () => {
-  console.info('Connected to mongoose');
-  if (!module.hot) {
-    app.listen(config.port, () => {
-      console.info(`The server is running at http://localhost:${config.port}/`);
-    });
-  }
-});
+if (!module.hot) {
+  app.listen(config.port, () => {
+    console.info(`The server is running at http://localhost:${config.port}/`);
+  });
+}
 
 //
 // Hot Module Replacement
