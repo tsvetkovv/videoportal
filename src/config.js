@@ -6,6 +6,10 @@ if (process.env.BROWSER) {
   );
 }
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('You should set DATABASE_URL in .env file');
+}
+
 module.exports = {
   // Node.js app
   port: process.env.PORT || 3000,
@@ -21,10 +25,8 @@ module.exports = {
   },
 
   // Database
-  databaseUrl:
-    process.env.DATABASE_URL ||
-    'mongodb://admin:admin@ds111124.mlab.com:11124/videoportal',
-
+  // should be set in variables.env
+  databaseUrl: process.env.DATABASE_URL,
   // Web analytics
   analytics: {
     // https://analytics.google.com/

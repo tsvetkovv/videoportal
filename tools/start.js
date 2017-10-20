@@ -6,6 +6,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import webpackConfig from './webpack.config';
+import '../env';
 import run, { format } from './run';
 import clean from './clean';
 

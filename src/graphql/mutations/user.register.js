@@ -46,15 +46,15 @@ const userRegister = {
     }
 
     if (count === 0 && errors.length === 0) {
-      const u = new User({
+      const userFromDb = new User({
         username,
         email: email.toLowerCase(),
         password: User.generateHash(password),
       });
 
       try {
-        await u.save();
-        user = u.toObject();
+        await userFromDb.save();
+        user = userFromDb.toObject();
         user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
           expiresIn: auth.jwt.expires,
         });
