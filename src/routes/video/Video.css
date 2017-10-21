@@ -1,0 +1,75 @@
+@import '../../components/variables.css';
+
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 40px 0;
+  max-width: var(--max-content-width);
+  display: flex;
+}
+
+.videoContent {
+  width: 854px;
+  height: 480px;
+  background: green;
+}
+
+.markContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 507px;
+}
+
+.btnGroup {
+  display: flex;
+}
+
+.btn {
+  padding: 4px 10px;
+  margin: 5px;
+  text-align: center;
+  font-size: 16px;
+  flex-grow: 1;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.btnFav {
+  background-color: indigo;
+  color: white;
+}
+
+.btnUnFav {
+  background-color: #55acee;
+  color: white;
+}
+
+.btnLike {
+  background-color: crimson;
+  color: white;
+}
+
+.btnDisLike {
+  background-color: #373277;
+  color: white;
+}
+
+.report {
+  text-align: right;
+  cursor: pointer;
+}
+
+h1,
+h4 {
+  margin: 10px 0;
+}

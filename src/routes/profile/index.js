@@ -1,7 +1,8 @@
 import React from 'react';
 import Profile from './Profile';
+import Layout from '../../components/Layout';
 
-const title = 'Profile';
+const title = 'Video name';
 
 function action() {
   // const { user  } = req;
@@ -11,7 +12,11 @@ function action() {
 
   return {
     title,
-    component: <Profile title={title} />,
+    component: (
+      <Layout>
+        <Profile title={title} />
+      </Layout>
+    ),
   };
 }
 

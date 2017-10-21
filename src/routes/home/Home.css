@@ -7,7 +7,7 @@
 
 .container {
   margin: 0 auto;
-  padding: 0 0 40px;
+  padding: 40px 0;
   max-width: var(--max-content-width);
 }
 
@@ -22,21 +22,4 @@
 .videosContainer {
   display: flex;
   flex-wrap: wrap;
-}
-
-.video {
-  display: flex;
-  flex-direction: column;
-  margin-right: 20px;
-  padding-bottom: 20px;
-
-  &:last-of-type {
-    margin-right: 0;
-  }
-}
-
-.videoSrc {
-  width: 210px;
-  height: 118px;
-  background: green;
 }

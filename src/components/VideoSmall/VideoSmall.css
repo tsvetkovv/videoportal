@@ -1,0 +1,26 @@
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.videoSrc {
+  width: 210px;
+  height: 118px;
+  background: green;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  background-color: rgba(34, 34, 34, 0.52);
+  color: white;
+  cursor: pointer;
+}

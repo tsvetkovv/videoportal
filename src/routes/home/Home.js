@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import VideoSmall from '../../components/VideoSmall/VideoSmall';
 import s from './Home.css';
-import Link from '../../components/Link';
 
 class Home extends React.Component {
   static propTypes = {
@@ -33,13 +33,7 @@ class Home extends React.Component {
             <article key={category.title} className={s.newsItem}>
               <h1 className={s.newsTitle}>{category.title}</h1>
               <div className={s.videosContainer}>
-                {category.content.map(video => (
-                  <div className={s.video}>
-                    <div className={s.videoSrc} />
-                    <a>{video.title}</a>
-                    <Link to="/user">{video.author}</Link>
-                  </div>
-                ))}
+                {category.content.map(video => <VideoSmall video={video} />)}
               </div>
             </article>
           ))}
