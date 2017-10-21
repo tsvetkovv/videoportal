@@ -6,8 +6,9 @@ import {
 import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
-import { User } from '../models';
+import { User } from '../../mongoose/models';
 import { auth } from '../../config';
+import { parseErrors } from '../../mongoose/helpers';
 
 const outputType = new GraphQLObjectType({
   name: 'userRegister',
@@ -25,7 +26,7 @@ const userRegister = {
     password: { type: new NonNull(StringType) },
   },
   resolve: async (source, { username, email, password }) => {
-    const errors = [];
+    let errors = [];
     let user = null;
 
     if (password.length < 8) {
@@ -36,7 +37,7 @@ const userRegister = {
     }
 
     // check to see if there's already a user with that email
-    const count = await User.count({ where: { email } });
+    const count = await User.count({ email });
     if (count > 0) {
       errors.push({
         key: 'email',
@@ -45,16 +46,21 @@ const userRegister = {
     }
 
     if (count === 0 && errors.length === 0) {
-      const createUser = await User.create({
+      const userFromDb = new User({
         username,
         email: email.toLowerCase(),
         password: User.generateHash(password),
       });
 
-      user = createUser.dataValues;
-      user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
-        expiresIn: auth.jwt.expires,
-      });
+      try {
+        await userFromDb.save();
+        user = userFromDb.toObject();
+        user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
+          expiresIn: auth.jwt.expires,
+        });
+      } catch (err) {
+        errors = errors.concat(parseErrors(err));
+      }
     }
 
     return {

@@ -6,7 +6,7 @@ import {
 import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
-import { User } from '../models';
+import { User } from '../../mongoose/models';
 import { auth } from '../../config';
 
 const outputType = new GraphQLObjectType({
@@ -28,11 +28,8 @@ const userLogin = {
     const usernameOrEmailLC = usernameOrEmail.toLowerCase();
 
     const user = await User.findOne({
-      attributes: ['id', 'username', 'email', 'password'],
-      where: {
-        $or: [{ username: usernameOrEmailLC }, { email: usernameOrEmailLC }],
-      },
-    });
+      $or: [{ username: usernameOrEmailLC }, { email: usernameOrEmailLC }],
+    }).exec();
 
     if (user && user.comparePassword(password)) {
       user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
