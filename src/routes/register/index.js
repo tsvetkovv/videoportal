@@ -33,9 +33,7 @@ function registerUserCreator(fetch, dispatch) {
       credentials: 'include',
     });
 
-    const r = resp.json();
-
-    const { data: { userRegister: { errors } } } = r;
+    const { data: { userRegister: { errors } } } = await resp.json();
 
     if (errors.length) {
       console.error(errors);

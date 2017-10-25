@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt-nodejs';
 import mongoose, { Schema } from 'mongoose';
+import { USER_ROLES } from '../../constants';
 
 const UserSchema = new Schema(
   {
@@ -8,35 +9,34 @@ const UserSchema = new Schema(
       unique: true,
       required: true,
     },
+    firstName: {
+      type: String,
+    },
+    secondName: {
+      type: String,
+    },
+    role: {
+      type: String,
+      required: true,
+      default: USER_ROLES.user,
+      enum: Object.values(USER_ROLES),
+    },
     password: {
       type: String,
       required: true,
     },
-    email: {
-      type: String,
-      validate: {
-        validator: v => {
-          const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
-          return re.test(v);
-        },
-        message: 'Invalid email',
+    claimedVideos: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Video',
       },
-    },
-    emailConfirmed: {
-      type: Boolean,
-    },
-    profile: {
-      type: Schema.ObjectId,
-      ref: 'UserProfile',
-    },
-    logins: {
-      type: Schema.ObjectId,
-      ref: 'UserLogin',
-    },
-    claims: {
-      type: Schema.ObjectId,
-      ref: 'UserClaim',
-    },
+    ],
+    favoriteVideos: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Video',
+      },
+    ],
   },
   {
     toObject: {
