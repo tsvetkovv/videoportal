@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import User from './User';
-import { RATING_FOR_BLOCKING_VIDEO } from '../../constants';
+import { RATING_FOR_HIDING_VIDEO } from '../../constants';
 
 const VideoSchema = new Schema(
   {
@@ -14,10 +13,16 @@ const VideoSchema = new Schema(
     },
     date: {
       type: Date,
+      default: new Date(),
     },
     author: {
       type: Schema.ObjectId,
+      required: true,
       ref: 'User',
+    },
+    rating: {
+      type: Number,
+      default: 0,
     },
     likedBy: [
       {
@@ -37,6 +42,12 @@ const VideoSchema = new Schema(
         ref: 'User',
       },
     ],
+    isBlocked: {
+      type: Boolean,
+    },
+    isWarning: {
+      type: Boolean,
+    },
   },
   {
     toObject: {
@@ -60,78 +71,24 @@ VideoSchema.pre('remove', (next, done) => {
 });
 
 class VideoClass {
-  get rating() {
-    return this.likedBy.length;
-  }
-
-  async likeByUser(userId) {
-    return this.update(
-      {
-        $push: {
-          likedBy: userId,
-        },
-      },
-      {
-        safe: true,
-      },
-    );
-  }
-
-  async dislikeByUser(userId) {
-    return this.update(
-      {
-        $push: {
-          dislikedBy: userId,
-        },
-      },
-      {
-        safe: true,
-      },
-    );
-  }
-
-  async addToFavoriteToUser(userId) {
-    await User.findOneAndUpdate(
-      userId,
-      {
-        $push: {
-          favoriteVideos: this.id,
-        },
-      },
-      {
-        safe: true,
-      },
-    );
-  }
-
-  async claim(userId) {
-    await User.findOneAndUpdate(
-      userId,
-      {
-        $push: {
-          claimedVideos: this.id,
-        },
-      },
-      {
-        safe: true,
-      },
-    );
-
-    return this.update(
-      {
-        $push: {
-          claimedBy: userId,
-        },
-      },
-      {
-        safe: true,
-      },
-    );
-  }
-
-  static async findBlockedVideos() {
+  static async getAllVisibleVideos() {
     return this.find({
-      claimedBy: { $size: { $lt: RATING_FOR_BLOCKING_VIDEO } },
+      isBlocked: false,
+      rating: { $gt: RATING_FOR_HIDING_VIDEO },
+    });
+  }
+
+  static async getNewestVideos() {
+    return this.getAllVisibleVideos().sort('rating');
+  }
+
+  static async getPopularVideos() {
+    return this.getAllVisibleVideos().sort('-date');
+  }
+
+  static async getBlockedVideos() {
+    return this.find({
+      $or: [{ isWarning: true }, { isBlocked: true }],
     });
   }
 }
