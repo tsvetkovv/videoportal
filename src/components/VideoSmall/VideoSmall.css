@@ -1,3 +1,5 @@
+@import '../colors.css';
+
 .video {
   display: flex;
   flex-direction: column;
@@ -9,7 +11,7 @@
 .videoSrc {
   width: 210px;
   height: 118px;
-  background: green;
+  background: var(--main);
 }
 
 .removeBtn {
@@ -20,7 +22,7 @@
   height: 20px;
   line-height: 20px;
   text-align: center;
-  background-color: rgba(34, 34, 34, 0.52);
+  background-color: rgba(255, 255, 255, 0.37);
   color: white;
   cursor: pointer;
 }

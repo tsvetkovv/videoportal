@@ -1,12 +1,21 @@
 @import '../variables.css';
+@import '../colors.css';
 
 :root {
   --brand-color: #61dafb;
 }
 
 .root {
-  background: green;
+  background: var(--main);
   color: #fff;
+}
+
+.logo {
+  background: url('../../assets/Ресурс_1001.png');
+  width: 80px;
+  height: 40px;
+  display: inline-block;
+  background-size: cover;
 }
 
 .container {

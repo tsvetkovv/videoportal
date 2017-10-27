@@ -36,6 +36,7 @@
     "react-dom": "^16.0.0",
     "react-modal": "^3.0.4",
     "react-redux": "^5.0.5",
+    "react-toastr": "^2.9.5",
     "recompose": "^0.26.0",
     "redux": "^3.7.1",
     "redux-logger": "^3.0.6",

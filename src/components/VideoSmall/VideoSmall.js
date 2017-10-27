@@ -11,15 +11,17 @@ class VideoSmall extends React.Component {
 
   render() {
     const { video } = this.props;
+    const userLink = `/user/${video.authorId}`;
+    const videoLink = `/video/${video.id}`;
 
     return (
       <div className={s.video}>
-        <Link to="/video">
+        <Link to={videoLink}>
           <div className={s.videoSrc} />
         </Link>
         <div className={s.removeBtn}>X</div>
-        <Link to="/video">{video.title}</Link>
-        <Link to="/user">{video.author}</Link>
+        <Link to={videoLink}>{video.title}</Link>
+        <Link to={userLink}>{video.author}</Link>
       </div>
     );
   }

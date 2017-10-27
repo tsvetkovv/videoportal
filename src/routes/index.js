@@ -11,7 +11,7 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     {
-      path: '/user',
+      path: '/user/:userId',
       load: () => import(/* webpackChunkName: 'user' */ './user'),
     },
     {
@@ -23,7 +23,7 @@ const routes = {
       load: () => import(/* webpackChunkName: 'register' */ './register'),
     },
     {
-      path: '/video',
+      path: '/video/:videoId',
       load: () => import(/* webpackChunkName: 'video' */ './video'),
     },
     {

@@ -1,3 +1,5 @@
+@import '../colors.css';
+
 .formGroup {
   margin-bottom: 15px;
 }
@@ -39,7 +41,7 @@
   width: 100%;
   outline: 0;
   border: 0;
-  background: green;
+  background: var(--main);
   color: #fff;
   text-align: center;
   text-decoration: none;
