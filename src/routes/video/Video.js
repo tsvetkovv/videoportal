@@ -2,14 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import cx from 'classnames';
 import Modal from 'react-modal';
-import ReactToastr, { ToastContainer } from 'react-toastr';
 import { withState } from 'recompose';
 import Link from '../../components/Link';
 import s from './Video.css';
-
-const ToastMessageFactory = React.createFactory(
-  ReactToastr.ToastMessage.animation,
-);
 
 @withState('modalIsOpen', 'setModalIsOpen', false)
 class Video extends Component {
@@ -61,14 +56,6 @@ class Video extends Component {
         >
           <div>Спасибо за обращение, Ваша жалоба принята к рассмотрению.</div>
         </Modal>
-        <ToastContainer
-          ref={input => {
-            this.container = input;
-          }}
-          toastMessageFactory={ToastMessageFactory}
-          className="toast-top-right"
-          preventDuplicates="true"
-        />
         <div className={s.container}>
           <div>
             <div className={s.videoContent} />
