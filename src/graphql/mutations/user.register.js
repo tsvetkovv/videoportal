@@ -37,15 +37,15 @@ const userRegister = {
     }
 
     // check to see if there's already a user with that email
-    const count = await User.count({ email });
+    const count = await User.count({ username });
     if (count > 0) {
       errors.push({
         key: 'email',
-        message: 'User with this email already exists',
+        message: 'User with this username already exists',
       });
     }
 
-    if (count === 0 && errors.length === 0) {
+    if (errors.length === 0) {
       const userFromDb = new User({
         username,
         email: email.toLowerCase(),
