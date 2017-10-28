@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './VideoSmall.css';
 import Link from '../Link';
@@ -7,17 +8,19 @@ import Link from '../Link';
 class VideoSmall extends React.Component {
   static propTypes = {
     video: PropTypes.object.isRequired, // eslint-disable-line
+    largeVideo: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { video } = this.props;
+    const { video, largeVideo } = this.props;
     const userLink = `/user/${video.authorId}`;
     const videoLink = `/video/${video.id}`;
+    const videoClass = largeVideo ? cx(s.large, s.videoSrc) : s.videoSrc;
 
     return (
       <div className={s.video}>
         <Link to={videoLink}>
-          <div className={s.videoSrc} />
+          <div className={videoClass} />
         </Link>
         <div className={s.removeBtn}>X</div>
         <Link to={videoLink}>{video.title}</Link>

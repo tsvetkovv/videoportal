@@ -21,7 +21,8 @@ html {
 
 body {
   margin: 0;
-  background: url('../../assets/backgroundVP-main.png');
+
+  /* background: url('../../assets/backgroundVP-main.png'); */
   background-size: 100%;
 }
 
@@ -176,4 +177,18 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+}
+
+.app {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }

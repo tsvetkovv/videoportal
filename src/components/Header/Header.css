@@ -1,13 +1,10 @@
 @import '../variables.css';
 @import '../colors.css';
 
-:root {
-  --brand-color: #61dafb;
-}
-
 .root {
   background: var(--main);
   color: #fff;
+  flex-grow: 0;
 }
 
 .logo {
@@ -16,20 +13,11 @@
   height: 40px;
   display: inline-block;
   background-size: cover;
+  margin-left: 20px;
 }
 
 .container {
   margin: 0 auto;
   padding: 20px 0;
   max-width: var(--max-content-width);
-}
-
-.brand {
-  color: white;
-  text-decoration: none;
-  font-size: 1.75em; /* ~28px */
-}
-
-.brandTxt {
-  margin-left: 10px;
 }

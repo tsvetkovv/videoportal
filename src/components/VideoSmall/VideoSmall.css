@@ -14,6 +14,11 @@
   background: var(--main);
 }
 
+.large {
+  width: 420px;
+  height: 236px;
+}
+
 .removeBtn {
   position: absolute;
   top: 0;

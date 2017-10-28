@@ -1,6 +1,8 @@
 @import '../../components/variables.css';
+@import '../../components/colors.css';
 
 .root {
+  flex-grow: 1;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -29,6 +31,10 @@
   height: 108px;
   line-height: 108px;
   text-align: center;
-  border: 5px dashed green;
+  border: 5px dashed var(--main);
   cursor: pointer;
+
+  &:hover {
+    border: 5px dashed var(--text-extra);
+  }
 }

@@ -8,6 +8,9 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
+        <Link className={s.brand} to="/admin">
+          <span className={s.brandTxt}>Admin</span>
+        </Link>
         <Link className={s.link} to="/login">
           Log in
         </Link>

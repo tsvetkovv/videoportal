@@ -9,10 +9,9 @@ class Header extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <div className={s.logo} />
           <Navigation />
-          <Link className={s.brand} to="/">
-            <span className={s.brandTxt}>Home</span>
+          <Link to="/">
+            <div className={s.logo} />
           </Link>
         </div>
       </div>
