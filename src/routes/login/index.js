@@ -6,18 +6,17 @@ import { loginUserRequest, loginUserSuccess } from '../../store/user/action';
 const title = 'Log In';
 
 function loginUserActionCreator(fetch, dispatch) {
-  return async (usernameOrEmail, password) => {
+  return async (username, password) => {
     dispatch(loginUserRequest());
 
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
        mutation {
-          userLogin(usernameOrEmail: "${usernameOrEmail}", password: "${password}") {
+          userLogin(username: "${username}", password: "${password}") {
             user {
               id,
-              username,
-              email
+              username
             }
             errors {
               message
@@ -41,7 +40,6 @@ function loginUserActionCreator(fetch, dispatch) {
       loginUserSuccess({
         id: user.id,
         username: user.username,
-        email: user.email,
       }),
     );
   };

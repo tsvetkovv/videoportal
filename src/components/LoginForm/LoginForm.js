@@ -11,7 +11,7 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { usernameOrEmail: '', password: '' };
+    this.state = { username: '', password: '' };
     this.handleUsernameOrEmailChange = this.handleUsernameOrEmailChange.bind(
       this,
     );
@@ -20,7 +20,7 @@ class LoginForm extends Component {
   }
 
   handleUsernameOrEmailChange(e) {
-    this.setState({ usernameOrEmail: e.target.value });
+    this.setState({ username: e.target.value });
   }
 
   handlePasswordChange(e) {
@@ -29,24 +29,24 @@ class LoginForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { usernameOrEmail, password } = this.state;
-    this.props.onSubmit(usernameOrEmail, password);
+    const { username, password } = this.state;
+    this.props.onSubmit(username, password);
   }
 
   render() {
-    const { usernameOrEmail, password } = this.state;
+    const { username, password } = this.state;
     return (
       <form method="post" onSubmit={this.handleSubmit}>
         <div className={s.formGroup}>
-          <label className={s.label} htmlFor="usernameOrEmail">
+          <label className={s.label} htmlFor="username">
             Username:
           </label>
           <input
             className={s.input}
-            id="usernameOrEmail"
+            id="username"
             type="text"
-            name="usernameOrEmail"
-            value={usernameOrEmail}
+            name="username"
+            value={username}
             onChange={this.handleUsernameOrEmailChange}
             autoFocus
           />

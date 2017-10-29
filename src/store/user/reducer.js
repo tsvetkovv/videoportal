@@ -4,15 +4,13 @@ import { LOGIN_USER_SUCCESS } from './action';
 const initialState = {
   id: null,
   username: null,
-  email: null,
 };
 
 const actionHandlers = {
-  [LOGIN_USER_SUCCESS]: (state, { payload: { id, username, email } }) => ({
+  [LOGIN_USER_SUCCESS]: (state, { payload: { id, username } }) => ({
     ...state,
     id,
     username,
-    email,
   }),
 };
 

@@ -6,8 +6,7 @@ const me = {
     return (
       request.user && {
         id: request.user.id,
-        email: request.user.email,
-        token: request.user.token,
+        username: request.user.username,
       }
     );
   },

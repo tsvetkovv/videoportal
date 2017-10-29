@@ -7,7 +7,7 @@ import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
 import { parseErrors } from '../../mongoose/helpers';
-import { handleAuth } from '../middlewares/auth';
+import { handleAuth } from '../helpers/auth';
 
 const outputType = new GraphQLObjectType({
   name: 'userRegister',
@@ -21,10 +21,9 @@ const userRegister = {
   type: outputType,
   args: {
     username: { type: new NonNull(StringType) },
-    email: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
   },
-  resolve: async ({ request }, { username, email, password }) => {
+  resolve: async ({ request }, { username, password }) => {
     let errors = [];
     let user = null;
 
@@ -36,11 +35,11 @@ const userRegister = {
         });
       }
 
-      // check to see if there's already a user with that email
+      // check to see if there's already a user with that username
       const count = await User.count({ username });
       if (count > 0) {
         errors.push({
-          key: 'email',
+          key: 'username',
           message: 'User with this username already exists',
         });
       }
@@ -48,7 +47,6 @@ const userRegister = {
       if (errors.length === 0) {
         const userFromDb = new User({
           username,
-          email: email.toLowerCase(),
           password: User.generateHash(password),
         });
 
@@ -56,11 +54,11 @@ const userRegister = {
           await userFromDb.save();
           user = userFromDb.toObject();
           request.user = user;
+          handleAuth(request, request.res);
         } catch (err) {
           errors = errors.concat(parseErrors(err));
         }
       }
-      handleAuth(request, request.res);
     } else {
       errors.push({
         key: 'logged',

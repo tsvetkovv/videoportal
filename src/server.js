@@ -15,13 +15,13 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
-import passport from './passport';
 import router from './router';
 import schema from './graphql/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './store/runtime/action';
 import config from './config';
+import User from './mongoose/models/User';
 
 const app = express();
 
@@ -50,13 +50,17 @@ app.use(
     getToken: req => req.cookies.id_token,
   }),
 );
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   const token = req.cookies.id_token;
   if (token) {
     try {
-      req.user = jwt.verify(token, config.auth.jwt.secret); // eslint-disable-line no-param-reassign
+      const { id } = jwt.verify(token, config.auth.jwt.secret);
+      const user = await User.findById(id);
+      if (user) {
+        req.user = user; // eslint-disable-line no-param-reassign
+      }
     } catch (e) {
-      console.log(e); // eslint-disable-line no-console
+      console.error(e); // eslint-disable-line no-console
     }
   }
   next();
@@ -72,39 +76,12 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 if (__DEV__) {
   app.enable('trust proxy');
 }
-
-const handleAuth = (req, res) => {
-  const token = jwt.sign(req.user, config.auth.jwt.secret, {
-    expiresIn: config.auth.jwt.expires,
-  });
-  res.cookie('id_token', token, {
-    maxAge: 1000 * config.auth.jwt.expires,
-    httpOnly: true,
-  });
-  res.redirect('/');
-};
-
-// facebook
-app.get(
-  '/login/facebook',
-  passport.authenticate('facebook', {
-    scope: ['email', 'user_location'],
-    session: false,
-  }),
-);
-app.get(
-  '/login/facebook/return',
-  passport.authenticate('facebook', {
-    failureRedirect: '/login',
-    session: false,
-  }),
-  handleAuth,
-);
 
 //
 // Register API middleware

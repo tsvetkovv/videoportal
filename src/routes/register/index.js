@@ -9,18 +9,17 @@ import {
 const title = 'New User Registration';
 
 function registerUserCreator(fetch, dispatch) {
-  return async (username, email, password) => {
+  return async (username, password) => {
     dispatch(registerUserRequest());
 
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
        mutation {
-        userRegister(username: "${username}", email: "${email}", password: "${password}") {
+        userRegister(username: "${username}", password: "${password}") {
            user {
              id,
-             username,
-             email
+             username
            },
           errors {
             message,

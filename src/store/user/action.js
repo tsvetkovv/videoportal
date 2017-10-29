@@ -15,11 +15,10 @@ export const loginUserRequest = () => ({
   type: LOGIN_USER_REQUEST,
 });
 
-export const loginUserSuccess = ({ id, username, email }) => ({
+export const loginUserSuccess = ({ id, username }) => ({
   type: LOGIN_USER_SUCCESS,
   payload: {
     id,
     username,
-    email,
   },
 });
