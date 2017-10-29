@@ -8,6 +8,7 @@ import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
 import { auth } from '../../config';
+import { handleAuth } from '../middlewares/auth';
 
 const outputType = new GraphQLObjectType({
   name: 'userLogin',
@@ -23,7 +24,7 @@ const userLogin = {
     usernameOrEmail: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
   },
-  resolve: async (root, { usernameOrEmail, password }) => {
+  resolve: async ({ request }, { usernameOrEmail, password }) => {
     const errors = [];
     const usernameOrEmailLC = usernameOrEmail.toLowerCase();
 
@@ -35,6 +36,7 @@ const userLogin = {
       user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
         expiresIn: auth.jwt.expires,
       });
+      handleAuth(request, request.res);
     } else {
       errors.push({ key: 'general', message: 'Invalid credentials' });
     }

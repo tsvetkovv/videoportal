@@ -3,12 +3,11 @@ import {
   GraphQLNonNull as NonNull,
   GraphQLObjectType,
 } from 'graphql';
-import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
-import { auth } from '../../config';
 import { parseErrors } from '../../mongoose/helpers';
+import { handleAuth } from '../middlewares/auth';
 
 const outputType = new GraphQLObjectType({
   name: 'userRegister',
@@ -25,42 +24,48 @@ const userRegister = {
     email: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
   },
-  resolve: async (source, { username, email, password }) => {
+  resolve: async ({ request }, { username, email, password }) => {
     let errors = [];
     let user = null;
 
-    if (password.length < 8) {
-      errors.push({
-        key: 'password',
-        message: 'Password must be at least 8 characters long',
-      });
-    }
-
-    // check to see if there's already a user with that email
-    const count = await User.count({ username });
-    if (count > 0) {
-      errors.push({
-        key: 'email',
-        message: 'User with this username already exists',
-      });
-    }
-
-    if (errors.length === 0) {
-      const userFromDb = new User({
-        username,
-        email: email.toLowerCase(),
-        password: User.generateHash(password),
-      });
-
-      try {
-        await userFromDb.save();
-        user = userFromDb.toObject();
-        user.token = jwt.sign({ id: user.id }, auth.jwt.secret, {
-          expiresIn: auth.jwt.expires,
+    if (!request.user) {
+      if (password.length < 8) {
+        errors.push({
+          key: 'password',
+          message: 'Password must be at least 8 characters long',
         });
-      } catch (err) {
-        errors = errors.concat(parseErrors(err));
       }
+
+      // check to see if there's already a user with that email
+      const count = await User.count({ username });
+      if (count > 0) {
+        errors.push({
+          key: 'email',
+          message: 'User with this username already exists',
+        });
+      }
+
+      if (errors.length === 0) {
+        const userFromDb = new User({
+          username,
+          email: email.toLowerCase(),
+          password: User.generateHash(password),
+        });
+
+        try {
+          await userFromDb.save();
+          user = userFromDb.toObject();
+          request.user = user;
+        } catch (err) {
+          errors = errors.concat(parseErrors(err));
+        }
+      }
+      handleAuth(request, request.res);
+    } else {
+      errors.push({
+        key: 'logged',
+        message: 'You already have an account',
+      });
     }
 
     return {
