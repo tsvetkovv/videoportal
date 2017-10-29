@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import VideoSmall from '../../components/VideoSmall/VideoSmall';
+import Link from '../../components/Link';
 import s from './User.css';
 
-class Contact extends React.Component {
+class User extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     profileData: PropTypes.shape({
@@ -37,7 +38,9 @@ class Contact extends React.Component {
               <div className={s.videosContainer}>
                 {category.content.map(video => <VideoSmall video={video} />)}
                 {category.title === 'My videos' && (
-                  <div className={s.addBtn}>(+) Add new video</div>
+                  <Link to="/new-video" className={s.addBtn}>
+                    (+) Add new video
+                  </Link>
                 )}
               </div>
             </article>
@@ -48,4 +51,4 @@ class Contact extends React.Component {
   }
 }
 
-export default withStyles(s)(Contact);
+export default withStyles(s)(User);

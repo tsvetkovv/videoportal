@@ -1,0 +1,6 @@
+{
+  "name": "NewVideoForm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./NewVideoForm.js"
+}

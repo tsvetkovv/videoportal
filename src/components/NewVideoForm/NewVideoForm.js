@@ -1,69 +1,70 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './RegisterForm.css';
+import s from './NewVideoForm.css';
 
-class RegisterForm extends Component {
+class NewVideoForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
   };
 
   state = {
-    username: '',
-    password: '',
+    link: '',
+    name: '',
+    rating: 0,
+    author: '',
   };
 
-  handleUsernameChange = e => {
-    this.setState({ username: e.target.value });
+  handleLinkChange = e => {
+    this.setState({ link: e.target.value });
   };
 
-  handlePasswordChange = e => {
-    this.setState({ password: e.target.value });
+  handleNameChange = e => {
+    this.setState({ name: e.target.value });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { username, password } = this.state;
-    if (password.length < 8) {
-      throw new Error('Password must be at least 8 characters long');
-    }
-    this.props.onSubmit(username, password);
+    const { link, name } = this.state;
+
+    this.props.onSubmit(link, name);
   };
 
   render() {
-    const { username, password } = this.state;
+    const { link, name } = this.state;
+
     return (
       <form method="post" onSubmit={this.handleSubmit}>
         <div className={s.formGroup}>
           <label className={s.label} htmlFor="username">
-            Username:
+            Link to the resource:
           </label>
           <input
             className={s.input}
-            id="username"
+            id="link"
             type="text"
-            name="username"
-            value={username}
-            onChange={this.handleUsernameChange}
+            name="link"
+            value={link}
+            onChange={this.handleLinkChange}
             autoFocus
           />
         </div>
         <div className={s.formGroup}>
           <label className={s.label} htmlFor="password">
-            Password:
+            Title:
           </label>
           <input
             className={s.input}
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handlePasswordChange}
+            id="name"
+            type="text"
+            name="name"
+            value={name}
+            onChange={this.handleNameChange}
           />
         </div>
         <div className={s.formGroup}>
           <button className={s.button} type="submit">
-            Register
+            Add
           </button>
         </div>
       </form>
@@ -71,4 +72,4 @@ class RegisterForm extends Component {
   }
 }
 
-export default withStyles(s)(RegisterForm);
+export default withStyles(s)(NewVideoForm);

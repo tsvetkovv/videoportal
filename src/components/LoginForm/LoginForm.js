@@ -39,7 +39,7 @@ class LoginForm extends Component {
       <form method="post" onSubmit={this.handleSubmit}>
         <div className={s.formGroup}>
           <label className={s.label} htmlFor="usernameOrEmail">
-            Username or email address:
+            Username:
           </label>
           <input
             className={s.input}
