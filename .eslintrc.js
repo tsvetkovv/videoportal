@@ -27,6 +27,8 @@ module.exports = {
     // https://github.com/benmosher/eslint-plugin-import/issues/458
     'import/no-extraneous-dependencies': 'off',
 
+    'import/prefer-default-export': 'off',
+
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead
     'no-console': [
