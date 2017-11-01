@@ -93,6 +93,12 @@ app.use(
     graphiql: __DEV__,
     rootValue: { request: req },
     pretty: __DEV__,
+    formatError: error => ({
+      message: error.message,
+      state: error.originalError && error.originalError.state,
+      locations: error.locations,
+      path: error.path,
+    }),
   })),
 );
 

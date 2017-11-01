@@ -1,18 +1,22 @@
-import {
-  GraphQLList as List,
-  GraphQLObjectType as ObjectType,
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
+import { GraphQLError } from 'graphql';
 
-const ErrorType = new List(
-  new ObjectType({
-    name: 'Error',
-    fields: {
-      key: { type: new NonNull(StringType) },
-      message: { type: StringType },
-    },
-  }),
-);
+class ErrorType extends GraphQLError {
+  constructor(errors) {
+    const lastError = errors[errors.length - 1];
+    // main message
+    super((lastError && lastError.key) || lastError.message || 'error');
+
+    this.state = errors.reduce((result, error) => {
+      if (Object.prototype.hasOwnProperty.call(result, error.key)) {
+        // eslint-disable-next-line no-param-reassign
+        result[error.key].push(error.message);
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        result[error.key] = [error.message];
+      }
+      return result;
+    }, {});
+  }
+}
 
 export default ErrorType;

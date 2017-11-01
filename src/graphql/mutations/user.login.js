@@ -1,23 +1,14 @@
 import {
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
-  GraphQLObjectType,
 } from 'graphql';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
 import { handleAuth } from '../helpers/auth';
 
-const outputType = new GraphQLObjectType({
-  name: 'userLogin',
-  fields: {
-    user: { type: UserType },
-    errors: { type: ErrorType },
-  },
-});
-
 const userLogin = {
-  type: outputType,
+  type: UserType,
   args: {
     username: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
@@ -33,13 +24,17 @@ const userLogin = {
       request.user = user;
       handleAuth(request, request.res);
     } else {
-      errors.push({ key: 'general', message: 'Invalid credentials' });
+      errors.push({
+        key: 'invalidCredentials',
+        message: 'Invalid credentials',
+      });
     }
 
-    return {
-      user,
-      errors,
-    };
+    if (errors.length) {
+      throw new ErrorType(errors);
+    }
+
+    return user;
   },
 };
 

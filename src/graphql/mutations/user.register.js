@@ -1,7 +1,6 @@
 import {
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
-  GraphQLObjectType,
 } from 'graphql';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
@@ -9,16 +8,8 @@ import { User } from '../../mongoose/models';
 import { parseErrors } from '../../mongoose/helpers';
 import { handleAuth } from '../helpers/auth';
 
-const outputType = new GraphQLObjectType({
-  name: 'userRegister',
-  fields: {
-    user: { type: UserType },
-    errors: { type: ErrorType },
-  },
-});
-
 const userRegister = {
-  type: outputType,
+  type: UserType,
   args: {
     username: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
@@ -66,10 +57,11 @@ const userRegister = {
       });
     }
 
-    return {
-      user,
-      errors,
-    };
+    if (errors.length) {
+      throw new ErrorType(errors);
+    }
+
+    return user;
   },
 };
 
