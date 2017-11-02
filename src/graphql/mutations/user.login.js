@@ -13,7 +13,7 @@ const userLogin = {
     username: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
   },
-  resolve: async ({ request }, { username, password }) => {
+  resolve: async ({ req, res }, { username, password }) => {
     const errors = [];
 
     const user = await User.findOne({
@@ -21,8 +21,8 @@ const userLogin = {
     }).exec();
 
     if (user && user.comparePassword(password)) {
-      request.user = user;
-      handleAuth(request, request.res);
+      req.user = user;
+      handleAuth(req, res);
     } else {
       errors.push({
         key: 'invalidCredentials',

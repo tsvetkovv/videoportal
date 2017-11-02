@@ -8,11 +8,12 @@ const userQuery = {
   args: {
     username: { type: GraphQLString },
   },
-  resolve: async ({ request }, { username }) => {
+  resolve: async ({ req }, { username }) => {
     const errors = [];
 
-    if (request.user) {
-      let user = {};
+    if (req.user) {
+      let user = req.user;
+
       if (username) {
         const foundUser = await User.getFullProfile({
           username,
@@ -26,8 +27,6 @@ const userQuery = {
             message: `User is not found with username: ${username}`,
           });
         }
-      } else {
-        user = request.user;
       }
 
       if (errors.length) {

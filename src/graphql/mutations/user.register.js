@@ -14,11 +14,11 @@ const userRegister = {
     username: { type: new NonNull(StringType) },
     password: { type: new NonNull(StringType) },
   },
-  resolve: async ({ request }, { username, password }) => {
+  resolve: async ({ req, res }, { username, password }) => {
     let errors = [];
     let user = null;
 
-    if (!request.user) {
+    if (!req.user) {
       if (password.length < 8) {
         errors.push({
           key: 'password',
@@ -44,8 +44,8 @@ const userRegister = {
         try {
           await userFromDb.save();
           user = userFromDb.toObject();
-          request.user = user;
-          handleAuth(request, request.res);
+          req.user = user;
+          handleAuth(req, res);
         } catch (err) {
           errors = errors.concat(parseErrors(err));
         }

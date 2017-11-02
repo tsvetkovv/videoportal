@@ -88,10 +88,10 @@ if (__DEV__) {
 // -----------------------------------------------------------------------------
 app.use(
   '/graphql',
-  expressGraphQL(req => ({
+  expressGraphQL((req, res) => ({
     schema,
     graphiql: __DEV__,
-    rootValue: { request: req },
+    rootValue: { req, res },
     pretty: __DEV__,
     formatError: error => ({
       message: error.message,
