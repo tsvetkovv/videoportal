@@ -214,7 +214,9 @@ app.use((err, req, res, next) => {
 //
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.databaseUrl);
+mongoose.connect(config.databaseUrl, {
+  autoIndex: __DEV__,
+});
 mongoose.connection.on('error', err => {
   console.info(err);
 });
