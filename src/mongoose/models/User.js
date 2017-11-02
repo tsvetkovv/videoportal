@@ -73,6 +73,12 @@ class UserClass {
     return bcrypt.hashSync(v, bcrypt.genSaltSync(8), null);
   }
 
+  static getFullProfile(query) {
+    return this.findOne(query)
+      .populate('claimedVideos')
+      .populate('favoriteVideos');
+  }
+
   async addToFavorite(videoId) {
     return this.update(
       {

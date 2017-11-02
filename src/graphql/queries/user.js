@@ -14,7 +14,7 @@ const userQuery = {
     if (request.user) {
       let user = {};
       if (username) {
-        const foundUser = await User.findOne({
+        const foundUser = await User.getFullProfile({
           username,
         });
 
