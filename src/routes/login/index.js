@@ -12,34 +12,27 @@ function loginUserActionCreator(fetch, dispatch) {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
-       mutation {
-          userLogin(username: "${username}", password: "${password}") {
-            user {
-              id,
+          mutation {
+            userLogin(username: "${username}", password: "${password}") {
               username
             }
-            errors {
-              message
-              key
-            }
           }
-        }
       `,
       }),
       credentials: 'include',
     });
 
-    const { data } = await resp.json();
-    const { userLogin: { user, errors } } = data;
-    if (errors.length) {
+    const { data, errors } = await resp.json();
+    const { userLogin } = data;
+    if (errors && errors.length) {
       console.error(errors);
+      // TODO handler
       return;
     }
 
     dispatch(
       loginUserSuccess({
-        id: user.id,
-        username: user.username,
+        username: userLogin.username,
       }),
     );
   };

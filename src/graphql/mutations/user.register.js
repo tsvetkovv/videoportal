@@ -15,10 +15,13 @@ const userRegister = {
     password: { type: new NonNull(StringType) },
   },
   resolve: async ({ req, res }, { username, password }) => {
+    const ONLY_NEW_USERS_CAN_REGISTER = false;
+    const AUTO_SIGN_IN = true;
+
     let errors = [];
     let user = null;
 
-    if (!req.user) {
+    if (!req.user || !ONLY_NEW_USERS_CAN_REGISTER) {
       if (password.length < 8) {
         errors.push({
           key: 'password',
@@ -45,7 +48,9 @@ const userRegister = {
           await userFromDb.save();
           user = userFromDb.toObject();
           req.user = user;
-          handleAuth(req, res);
+          if (AUTO_SIGN_IN) {
+            handleAuth(req, res);
+          }
         } catch (err) {
           errors = errors.concat(parseErrors(err));
         }

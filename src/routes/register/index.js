@@ -17,14 +17,7 @@ function registerUserCreator(fetch, dispatch) {
         query: `
        mutation {
         userRegister(username: "${username}", password: "${password}") {
-           user {
-             id,
-             username
-           },
-          errors {
-            message,
-            key
-          }
+          username
         }
       }
       `,
@@ -34,8 +27,9 @@ function registerUserCreator(fetch, dispatch) {
 
     const { errors } = await resp.json();
 
-    if (errors.length) {
+    if (errors && errors.length) {
       console.error(errors);
+      // TODO handler
       return;
     }
 
