@@ -8,7 +8,6 @@ import Link from '../../components/Link';
 import s from './User.css';
 
 const mapStateToProps = state => ({
-  isLogin: _.get(state, 'user.isLogin'),
   userId: _.get(state, 'user.id'),
 });
 
@@ -42,6 +41,7 @@ class User extends React.Component {
       userId,
       userPageId,
     } = this.props;
+    const isYourProfile = userId === userPageId;
 
     return (
       <div className={s.root}>
@@ -63,10 +63,14 @@ class User extends React.Component {
           <article className={s.newsItem}>
             <h1 className={s.newsTitle}>User`s videos</h1>
             <div className={s.videosContainer}>
-              {favoriteVideos.map(video => <VideoSmall video={video} />)}
-              <Link to="/new-video" className={s.addBtn}>
-                (+) Add new video
-              </Link>
+              {favoriteVideos.map(video => (
+                <VideoSmall video={video} deleteIcon={isYourProfile} />
+              ))}
+              {isYourProfile && (
+                <Link to="/new-video" className={s.addBtn}>
+                  (+) Add new video
+                </Link>
+              )}
             </div>
           </article>
           <article className={s.newsItem}>

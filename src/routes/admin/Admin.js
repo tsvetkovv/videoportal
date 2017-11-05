@@ -34,7 +34,7 @@ class Admin extends React.Component {
           <h2>Moderation List</h2>
           {reportedVideo.map(video => (
             <div className={s.videoContainer}>
-              <VideoSmall video={video} largeVideo />
+              <VideoSmall video={video} largeVideo deleteIcon />
               <div>
                 <a className={s.adminBtn}>mark as good</a>
               </div>

@@ -23,10 +23,10 @@ class Video extends Component {
     const {
       videoData: {
         title,
+        youtubeId,
         rating,
         description,
-        author,
-        authorId,
+        author: { id, username },
         modalIsOpen,
         setModalIsOpen,
       },
@@ -44,7 +44,7 @@ class Video extends Component {
         backgroundColor: 'rgba(119, 119, 119, 0.75)',
       },
     };
-    const userLink = `/user/${authorId}`;
+    const userLink = `/user/${id}`;
 
     return (
       <div className={s.root}>
@@ -58,10 +58,14 @@ class Video extends Component {
         </Modal>
         <div className={s.container}>
           <div>
-            <div className={s.videoContent} />
+            <iframe
+              title={youtubeId}
+              className={s.videoContent}
+              src={`https://www.youtube.com/embed/${youtubeId}`}
+            />
             <h1>{title}</h1>
             <h4>{rating}</h4>
-            <Link to={userLink}>{author}</Link>
+            <Link to={userLink}>{username}</Link>
             <p>{description}</p>
           </div>
           <div className={s.markContainer}>
