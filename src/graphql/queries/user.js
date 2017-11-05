@@ -8,40 +8,29 @@ const userQuery = {
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async ({ req }, { id: userId }) => {
+  resolve: async (_, { id: userId }) => {
     const errors = [];
 
-    if (req.user) {
-      let user = null;
+    let user = null;
 
-      if (userId) {
-        const foundUser = await User.getFullProfile({
-          _id: userId,
-        });
+    const foundUser = await User.getFullProfile({
+      _id: userId,
+    });
 
-        if (foundUser) {
-          user = foundUser;
-          user.ownVideos = await Video.find({ author: user.id });
-        } else {
-          errors.push({
-            key: 'notFound',
-            message: `User is not found with id: ${userId}`,
-          });
-        }
-      }
-
-      if (errors.length) {
-        throw new ErrorType(errors);
-      }
-      return user;
+    if (foundUser) {
+      user = foundUser;
+      user.ownVideos = await Video.find({ author: user.id });
+    } else {
+      errors.push({
+        key: 'notFound',
+        message: `User is not found with id: ${userId}`,
+      });
     }
 
-    throw new ErrorType([
-      {
-        key: 'unauthorized',
-        message: 'You did not login',
-      },
-    ]);
+    if (errors.length) {
+      throw new ErrorType(errors);
+    }
+    return user;
   },
 };
 
