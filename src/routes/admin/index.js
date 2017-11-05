@@ -3,42 +3,32 @@ import Layout from '../../components/Layout';
 import Admin from './Admin';
 
 const title = 'Admin Page';
-const isAdmin = true;
 
-function action() {
-  if (!isAdmin) {
-    return { redirect: '/home' };
+async function action({ fetch, store }) {
+  const { user: { role } } = store.getState();
+  const respLast = await fetch('/graphql', {
+    body: JSON.stringify({
+      query: `{
+        videos(blamed: true) {
+          youtubeId
+          title
+          rating
+        }
+      }`,
+    }),
+  });
+  const { data: { videos } } = await respLast.json();
+
+  if (role !== 'ADMIN') {
+    return { redirect: '/' };
   }
-
-  const adminPageData = {
-    reportedVideo: [
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-    ],
-  };
 
   return {
     chunks: ['admin'],
     title,
     component: (
       <Layout>
-        <Admin title={title} adminPageData={adminPageData} />
+        <Admin title={title} blamedVideos={videos} />
       </Layout>
     ),
   };

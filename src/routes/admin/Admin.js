@@ -7,32 +7,29 @@ import s from './Admin.css';
 class Admin extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    adminPageData: PropTypes.shape({
-      reportedVideo: PropTypes.arrayOf(
-        PropTypes.shape({
-          content: PropTypes.arrayOf(
-            PropTypes.shape({
-              title: PropTypes.string.isRequired,
-              url: PropTypes.string.isRequired,
-              author: PropTypes.string.isRequired,
-              rating: PropTypes.number.isRequired,
-            }),
-          ),
-          title: PropTypes.string.isRequired,
+    blamedVideos: PropTypes.arrayOf(
+      PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        youtubeId: PropTypes.string.isRequired,
+        author: PropTypes.shape({
+          id: PropTypes.string,
+          username: PropTypes.string,
         }),
-      ),
-    }).isRequired,
+        rating: PropTypes.number.isRequired,
+      }),
+    ).isRequired,
   };
 
   render() {
-    const { adminPageData: { reportedVideo } } = this.props;
+    const { blamedVideos } = this.props;
 
     return (
       <div className={s.root}>
         <div className={s.container}>
           <h1>{this.props.title}</h1>
           <h2>Moderation List</h2>
-          {reportedVideo.map(video => (
+          {!blamedVideos.length && <h2>There is no blamed videos</h2>}
+          {blamedVideos.map(video => (
             <div className={s.videoContainer}>
               <VideoSmall video={video} largeVideo deleteIcon />
               <div>
