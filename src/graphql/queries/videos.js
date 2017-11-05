@@ -1,26 +1,35 @@
-import { GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
+import { GraphQLInt, GraphQLList, GraphQLBoolean } from 'graphql';
 
 import VideoType from '../types/VideoType';
 import ErrorType from '../types/ErrorType';
 import OrderType from '../types/OrderType';
 import { Video } from '../../mongoose/models';
-import { ORDERS } from '../../constants';
+import { ORDERS, USER_ROLES } from '../../constants';
 
 const videosQuery = {
   type: new GraphQLList(VideoType),
   args: {
-    orderBy: { type: new GraphQLNonNull(OrderType) },
+    orderBy: { type: OrderType },
     limit: { type: GraphQLInt },
+    blamed: { type: GraphQLBoolean },
   },
-  resolve: async (_, { orderBy, limit }) => {
+  resolve: async ({ req: { user } }, { orderBy, limit, blamed }) => {
     const errors = [];
     let foundVideo = [];
 
-    if (orderBy === ORDERS.date) {
-      foundVideo = await Video.getNewestVideos(limit);
-    }
-    if (orderBy === ORDERS.rating) {
-      foundVideo = await Video.getPopularVideos(limit);
+    if (!blamed) {
+      if (orderBy === ORDERS.rating) {
+        foundVideo = await Video.getPopularVideos(limit);
+      } else {
+        foundVideo = await Video.getNewestVideos(limit);
+      }
+    } else if (user && user.role === USER_ROLES.admin) {
+      foundVideo = await Video.getBlockedVideos();
+    } else {
+      errors.push({
+        key: 'accessDenied',
+        message: 'You do not have permission',
+      });
     }
 
     if (errors.length) {
