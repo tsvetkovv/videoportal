@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import Login from './Login';
 import { loginUserRequest, loginUserSuccess } from '../../store/user/action';
+import history from './../../history';
 
 const title = 'Log In';
 
@@ -39,11 +40,20 @@ function loginUserActionCreator(fetch, dispatch) {
         role: userLogin.role,
       }),
     );
+
+    history.push('/');
   };
 }
 
-function action({ fetch, store: { dispatch } }) {
-  const onSubmit = loginUserActionCreator(fetch, dispatch);
+function action({ fetch, store }) {
+  const onSubmit = loginUserActionCreator(fetch, store.dispatch);
+
+  const state = store.getState();
+  if (state.user) {
+    return {
+      redirect: '/',
+    };
+  }
 
   return {
     chunks: ['login'],
