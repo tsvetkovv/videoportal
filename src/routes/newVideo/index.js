@@ -2,10 +2,11 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import NewVideo from './NewVideo';
 import { getYoutubeId } from '../../common/helpers';
+import history from './../../history';
 
 const title = 'Add new video';
 
-function addVideoCreator(fetch) {
+function addVideoCreator(fetch, id) {
   return async (link, name) => {
     const youtubeId = getYoutubeId(link);
 
@@ -23,6 +24,8 @@ function addVideoCreator(fetch) {
       credentials: 'include',
     });
 
+    history.push(`/user/${id}`);
+
     const { errors } = await resp.json();
 
     if (errors && errors.length) {
@@ -31,8 +34,9 @@ function addVideoCreator(fetch) {
   };
 }
 
-function action({ fetch }) {
-  const handleAddVideo = addVideoCreator(fetch);
+function action({ fetch, store }) {
+  const { user: { id } } = store.getState();
+  const handleAddVideo = addVideoCreator(fetch, id);
 
   return {
     chunks: ['user'],
