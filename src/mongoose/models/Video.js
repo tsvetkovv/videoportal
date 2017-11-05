@@ -44,9 +44,11 @@ const VideoSchema = new Schema({
   ],
   isBlocked: {
     type: Boolean,
+    default: false,
   },
   isWarning: {
     type: Boolean,
+    default: false,
   },
 });
 
@@ -56,19 +58,21 @@ VideoSchema.pre('remove', (next, done) => {
 });
 
 class VideoClass {
-  static async getAllVisibleVideos() {
+  static getAllVisibleVideos(limit) {
     return this.find({
       isBlocked: false,
       rating: { $gt: RATING_FOR_HIDING_VIDEO },
-    });
+    })
+      .limit(limit)
+      .populate('author');
   }
 
-  static async getNewestVideos() {
-    return this.getAllVisibleVideos().sort('-date');
+  static async getNewestVideos(limit) {
+    return this.getAllVisibleVideos(limit).sort({ date: -1 });
   }
 
-  static async getPopularVideos() {
-    return this.getAllVisibleVideos().sort('rating');
+  static async getPopularVideos(limit) {
+    return this.getAllVisibleVideos(limit).sort({ rating: 1, date: -1 });
   }
 
   static async getBlockedVideos() {

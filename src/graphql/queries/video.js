@@ -3,7 +3,7 @@ import VideoType from '../types/VideoType';
 import ErrorType from '../types/ErrorType';
 import { Video } from '../../mongoose/models';
 
-const userQuery = {
+const videoQuery = {
   type: VideoType,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
@@ -21,4 +21,4 @@ const userQuery = {
   },
 };
 
-export default userQuery;
+export default videoQuery;

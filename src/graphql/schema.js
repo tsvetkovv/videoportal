@@ -5,6 +5,7 @@ import {
 
 import user from './queries/user';
 import video from './queries/video';
+import videos from './queries/videos';
 import news from './queries/news';
 import userLogin from './mutations/user.login';
 import userLogout from './mutations/user.logout';
@@ -17,6 +18,7 @@ const schema = new Schema({
     fields: {
       user,
       video,
+      videos,
       news,
     },
   }),
