@@ -55,7 +55,7 @@ app.use(async (req, res, next) => {
   if (token) {
     try {
       const { id } = jwt.verify(token, config.auth.jwt.secret);
-      const user = await User.findById(id);
+      const user = (await User.findById(id)).toObject();
       if (user) {
         req.user = user; // eslint-disable-line no-param-reassign
       }
@@ -115,8 +115,15 @@ app.get('*', async (req, res, next) => {
       cookie: req.headers.cookie,
     });
 
+    const { id, username, role } = req.user || {};
     const initialState = {
-      user: req.user || null,
+      user: req.user
+        ? {
+            id,
+            username,
+            role,
+          }
+        : null,
     };
 
     const store = configureStore(initialState, {
