@@ -4,6 +4,7 @@ import {
 } from 'graphql';
 
 import user from './queries/user';
+import video from './queries/video';
 import news from './queries/news';
 import userLogin from './mutations/user.login';
 import userLogout from './mutations/user.logout';
@@ -15,6 +16,7 @@ const schema = new Schema({
     name: 'Query',
     fields: {
       user,
+      video,
       news,
     },
   }),

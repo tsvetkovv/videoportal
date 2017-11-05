@@ -37,8 +37,7 @@ async function action({ fetch, store: { dispatch }, params: { userId } }) {
       query: `{
         user(id: "${userId}") {
           username,
-          claimedVideos { id, link, title, rating },
-          favoriteVideos { id, link, title, rating, author { username, id} }
+          favoriteVideos { youtubeId, title, rating, author { username, id} }
         }
       }
     `,
