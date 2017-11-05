@@ -29,6 +29,7 @@ function loginUserActionCreator(fetch, dispatch) {
     const { userLogin } = data;
     if (errors && errors.length) {
       console.error(errors);
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
       // TODO handler
       return;
     }

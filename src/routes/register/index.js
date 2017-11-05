@@ -28,7 +28,7 @@ function registerUserCreator(fetch, dispatch) {
     const { errors } = await resp.json();
 
     if (errors && errors.length) {
-      console.error(errors);
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
       // TODO handler
       return;
     }

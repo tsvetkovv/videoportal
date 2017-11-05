@@ -13,7 +13,7 @@ class VideoSmall extends React.Component {
 
   render() {
     const { video, largeVideo } = this.props;
-    const userLink = `/user/${video.authorId}`;
+    const userLink = `/user/${video.author.id}`;
     const videoLink = `/video/${video.id}`;
     const videoClass = largeVideo ? cx(s.large, s.videoSrc) : s.videoSrc;
 
@@ -24,7 +24,7 @@ class VideoSmall extends React.Component {
         </Link>
         <div className={s.removeBtn}>X</div>
         <Link to={videoLink}>{video.title}</Link>
-        <Link to={userLink}>{video.author}</Link>
+        <Link to={userLink}>{video.author.username}</Link>
       </div>
     );
   }

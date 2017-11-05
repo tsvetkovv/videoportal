@@ -37,7 +37,7 @@ class User extends React.Component {
 
   render() {
     const {
-      profileData: { userName, categories },
+      profileData: { username, claimedVideos, favoriteVideos },
       onLogOut,
       userId,
       userPageId,
@@ -48,7 +48,7 @@ class User extends React.Component {
         <div className={s.container}>
           <div className={s.titleContainer}>
             <h1>
-              {userId === userPageId ? 'Your profile' : `${userName} profile`}
+              {userId === userPageId ? 'Your profile' : `${username} profile`}
             </h1>
             {userId === userPageId && (
               <h3
@@ -60,20 +60,21 @@ class User extends React.Component {
               </h3>
             )}
           </div>
-          {categories.map(category => (
-            <article key={category.title} className={s.newsItem}>
-              <h1 className={s.newsTitle}>{category.title}</h1>
-              <div className={s.videosContainer}>
-                {category.content.map(video => <VideoSmall video={video} />)}
-                {category.title === 'User`s videos' &&
-                  userId === userPageId && (
-                    <Link to="/new-video" className={s.addBtn}>
-                      (+) Add new video
-                    </Link>
-                  )}
-              </div>
-            </article>
-          ))}
+          <article className={s.newsItem}>
+            <h1 className={s.newsTitle}>User`s videos</h1>
+            <div className={s.videosContainer}>
+              {favoriteVideos.map(video => <VideoSmall video={video} />)}
+              <Link to="/new-video" className={s.addBtn}>
+                (+) Add new video
+              </Link>
+            </div>
+          </article>
+          <article className={s.newsItem}>
+            <h1 className={s.newsTitle}>Favorite videos</h1>
+            <div className={s.videosContainer}>
+              {claimedVideos.map(video => <VideoSmall video={video} />)}
+            </div>
+          </article>
         </div>
       </div>
     );

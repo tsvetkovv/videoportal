@@ -24,19 +24,23 @@ class Home extends React.Component {
   };
 
   render() {
-    const { homeData: { categories } } = this.props;
+    const { homeData: { lastVideos, populateVideos } } = this.props;
 
     return (
       <div className={s.root}>
         <div className={s.container}>
-          {categories.map(category => (
-            <article key={category.title} className={s.newsItem}>
-              <h1 className={s.newsTitle}>{category.title}</h1>
-              <div className={s.videosContainer}>
-                {category.content.map(video => <VideoSmall video={video} />)}
-              </div>
-            </article>
-          ))}
+          <article className={s.newsItem}>
+            <h1 className={s.newsTitle}>Last videos</h1>
+            <div className={s.videosContainer}>
+              {lastVideos.map(video => <VideoSmall video={video} />)}
+            </div>
+          </article>
+          <article className={s.newsItem}>
+            <h1 className={s.newsTitle}>Populate videos</h1>
+            <div className={s.videosContainer}>
+              {populateVideos.map(video => <VideoSmall video={video} />)}
+            </div>
+          </article>
         </div>
       </div>
     );

@@ -32,63 +32,69 @@ function logoutUserActionCreator(fetch, dispatch) {
 }
 
 async function action({ fetch, store: { dispatch }, params: { userId } }) {
-  // const resp = await fetch('/graphql', {
-  //   body: JSON.stringify({
-  //     query: `{userId:${userId}}`,
-  //   }),
-  // });
-  // const { profileData } = await resp.json();
-  // if (!data || !data.news) throw new Error('Failed to load the news feed.');
+  const resp = await fetch('/graphql', {
+    body: JSON.stringify({
+      query: `{
+        user(id: "${userId}") {
+          username,
+          claimedVideos { id, link, title, rating },
+          favoriteVideos { id, link, title, rating, author { username, id} }
+        }
+      }
+    `,
+    }),
+  });
+  const { data } = await resp.json();
+  console.error(data);
 
-  const profileData = {
-    userName: 'Victor',
-    categories: [
+  const newData = {
+    username: 'alena',
+    claimedVideos: [
       {
-        title: 'User`s videos',
-        content: [
-          {
-            id: 3333,
-            title: 'video1',
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 3333,
-            title: 'video2',
-            rating: 4.6,
-            url: 'bbb',
-          },
-          {
-            id: 3333,
-            title: 'video3',
-            rating: 4.5,
-            url: 'aaa',
-          },
-        ],
+        id: 3333,
+        title: 'video1',
+        rating: 4.5,
+        link: 'As-Hz6YjbVI',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
       {
-        title: 'Favorites',
-        content: [
-          {
-            id: 3333,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 111,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 3333,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 111,
-            rating: 4.6,
-            url: 'bbb',
-          },
-        ],
+        id: 5555,
+        title: 'video1',
+        rating: 4.5,
+        link: 'K5O-lJW6xvg',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
+      },
+    ],
+    favoriteVideos: [
+      {
+        id: 3333,
+        title: 'video1',
+        rating: 4.5,
+        link: 'As-Hz6YjbVI',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
+      },
+      {
+        id: 5555,
+        title: 'video1',
+        rating: 4.5,
+        link: 'K5O-lJW6xvg',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
     ],
   };
+
   const onLogOut = logoutUserActionCreator(fetch, dispatch);
 
   return {
@@ -99,7 +105,7 @@ async function action({ fetch, store: { dispatch }, params: { userId } }) {
         <User
           userPageId={userId}
           title={title}
-          profileData={profileData}
+          profileData={newData}
           onLogOut={onLogOut}
         />
       </Layout>

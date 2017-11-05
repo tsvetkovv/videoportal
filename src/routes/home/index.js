@@ -12,96 +12,48 @@ async function action({ fetch }) {
   if (!data || !data.news) throw new Error('Failed to load the news feed.');
 
   const homeData = {
-    categories: [
+    lastVideos: [
       {
-        title: 'Popular',
-        content: [
-          {
-            id: 2222,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 12345,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 2222,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 12345,
-            rating: 4.6,
-            url: 'bbb',
-          },
-          {
-            id: 2222,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 12345,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 2222,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 12345,
-            rating: 4.6,
-            url: 'bbb',
-          },
-          {
-            id: 2222,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 12345,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 2222,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 12345,
-            rating: 4.6,
-            url: 'bbb',
-          },
-          {
-            id: 2222,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 12345,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 2222,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 12345,
-            rating: 4.6,
-            url: 'bbb',
-          },
-        ],
+        id: 3333,
+        title: 'video1',
+        rating: 4.5,
+        link: 'As-Hz6YjbVI',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
       {
-        title: 'Last',
-        content: [
-          {
-            id: 2222,
-            title: 'video1',
-            author: 'Alena',
-            authorId: 12345,
-            rating: 4.5,
-            url: 'aaa',
-          },
-          {
-            id: 2222,
-            title: 'video2',
-            author: 'Viktor',
-            authorId: 12345,
-            rating: 4.6,
-            url: 'bbb',
-          },
-        ],
+        id: 5555,
+        title: 'video1',
+        rating: 4.5,
+        link: 'K5O-lJW6xvg',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
+      },
+    ],
+    populateVideos: [
+      {
+        id: 3333,
+        title: 'video1',
+        rating: 4.5,
+        link: 'As-Hz6YjbVI',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
+      },
+      {
+        id: 5555,
+        title: 'video1',
+        rating: 4.5,
+        link: 'K5O-lJW6xvg',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
     ],
   };

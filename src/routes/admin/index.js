@@ -13,28 +13,24 @@ function action() {
   const adminPageData = {
     reportedVideo: [
       {
-        id: 2222,
+        id: 3333,
         title: 'video1',
-        author: 'Alena',
-        authorId: 12345,
         rating: 4.5,
-        url: 'aaa',
+        link: 'As-Hz6YjbVI',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
       {
-        id: 2222,
+        id: 5555,
         title: 'video1',
-        author: 'Alena',
-        authorId: 12345,
         rating: 4.5,
-        url: 'aaa',
-      },
-      {
-        id: 2222,
-        title: 'video1',
-        author: 'Alena',
-        authorId: 12345,
-        rating: 4.5,
-        url: 'aaa',
+        link: 'K5O-lJW6xvg',
+        author: {
+          id: '59fd72dee251fc133c8ef8e0',
+          username: 'alena',
+        },
       },
     ],
   };
