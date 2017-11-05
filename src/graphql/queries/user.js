@@ -1,6 +1,6 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import UserType from '../types/UserType';
-import User from '../../mongoose/models/User';
+import { User, Video } from '../../mongoose/models';
 import ErrorType from '../types/ErrorType';
 
 const userQuery = {
@@ -12,7 +12,7 @@ const userQuery = {
     const errors = [];
 
     if (req.user) {
-      let user = req.user;
+      let user = null;
 
       if (userId) {
         const foundUser = await User.getFullProfile({
@@ -21,6 +21,7 @@ const userQuery = {
 
         if (foundUser) {
           user = foundUser;
+          user.ownVideos = await Video.find({ author: user.id });
         } else {
           errors.push({
             key: 'notFound',

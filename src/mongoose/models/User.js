@@ -15,12 +15,6 @@ const UserSchema = new Schema(
       unique: true,
       required: true,
     },
-    firstName: {
-      type: String,
-    },
-    secondName: {
-      type: String,
-    },
     role: {
       type: String,
       required: true,
