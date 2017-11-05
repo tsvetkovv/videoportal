@@ -38,57 +38,13 @@ async function action({ fetch, store: { dispatch }, params: { userId } }) {
         user(id: "${userId}") {
           username,
           favoriteVideos { youtubeId, title, rating, author { username, id} }
+          ownVideos { youtubeId, title, date, rating }
         }
       }
     `,
     }),
   });
-  const { data } = await resp.json();
-  console.error(data);
-
-  const newData = {
-    username: 'alena',
-    claimedVideos: [
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-    ],
-    favoriteVideos: [
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-      {
-        title: 'video1',
-        rating: 4.5,
-        youtubeId: 'D9QxQyx43ig',
-        author: {
-          id: '59fd72dee251fc133c8ef8e0',
-          username: 'alena',
-        },
-      },
-    ],
-  };
+  const { data: { user } } = await resp.json();
 
   const onLogOut = logoutUserActionCreator(fetch, dispatch);
 
@@ -100,7 +56,7 @@ async function action({ fetch, store: { dispatch }, params: { userId } }) {
         <User
           userPageId={userId}
           title={title}
-          profileData={newData}
+          profileData={user}
           onLogOut={onLogOut}
         />
       </Layout>

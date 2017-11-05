@@ -36,7 +36,7 @@ class User extends React.Component {
 
   render() {
     const {
-      profileData: { username, claimedVideos, favoriteVideos },
+      profileData: { username, ownVideos, favoriteVideos },
       onLogOut,
       userId,
       userPageId,
@@ -63,7 +63,7 @@ class User extends React.Component {
           <article className={s.newsItem}>
             <h1 className={s.newsTitle}>User`s videos</h1>
             <div className={s.videosContainer}>
-              {favoriteVideos.map(video => (
+              {ownVideos.map(video => (
                 <VideoSmall video={video} deleteIcon={isYourProfile} />
               ))}
               {isYourProfile && (
@@ -76,7 +76,7 @@ class User extends React.Component {
           <article className={s.newsItem}>
             <h1 className={s.newsTitle}>Favorite videos</h1>
             <div className={s.videosContainer}>
-              {claimedVideos.map(video => <VideoSmall video={video} />)}
+              {favoriteVideos.map(video => <VideoSmall video={video} />)}
             </div>
           </article>
         </div>

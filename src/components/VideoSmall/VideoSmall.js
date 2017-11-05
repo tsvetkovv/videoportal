@@ -14,7 +14,7 @@ class VideoSmall extends React.Component {
 
   render() {
     const { video, largeVideo, deleteIcon = false } = this.props;
-    const userLink = `/user/${video.author.id}`;
+    const userLink = video.author ? `/user/${video.author.id}` : null;
     const videoLink = `/video/${video.youtubeId}`;
     const videoClass = largeVideo ? cx(s.large, s.videoSrc) : s.videoSrc;
 
@@ -27,7 +27,7 @@ class VideoSmall extends React.Component {
         />
         {deleteIcon && <div className={s.removeBtn}>X</div>}
         <Link to={videoLink}>{video.title}</Link>
-        <Link to={userLink}>{video.author.username}</Link>
+        {video.author && <Link to={userLink}>{video.author.username}</Link>}
       </div>
     );
   }

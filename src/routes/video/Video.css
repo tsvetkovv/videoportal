@@ -12,6 +12,10 @@
   padding: 40px 0;
   max-width: var(--max-content-width);
   display: flex;
+
+  iframe {
+    border: 0;
+  }
 }
 
 .videoContent {
