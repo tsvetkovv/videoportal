@@ -1,17 +1,20 @@
 import { createReducer } from '../utils';
-import { LOGIN_USER_SUCCESS } from './action';
+import { LOGIN_USER_SUCCESS, LOGOUT_USER_SUCCESS } from './action';
 
 const initialState = {
   id: null,
   username: null,
+  role: null,
 };
 
 const actionHandlers = {
-  [LOGIN_USER_SUCCESS]: (state, { payload: { id, username } }) => ({
+  [LOGIN_USER_SUCCESS]: (state, { payload: { id, username, role } }) => ({
     ...state,
     id,
     username,
+    role,
   }),
+  [LOGOUT_USER_SUCCESS]: () => null,
 };
 
 export default createReducer(actionHandlers, initialState);

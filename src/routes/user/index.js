@@ -1,10 +1,39 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import User from './User';
+import { logoutUserRequest, logoutUserSuccess } from '../../store/user/action';
 
 const title = 'Your profile';
 
-async function action({ params: { userId } }) {
+function logoutUserActionCreator(fetch, dispatch) {
+  return async () => {
+    dispatch(logoutUserRequest());
+
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            userLogout {
+             id
+            }
+          }
+      `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+    if (errors && errors.length) {
+      console.error(errors);
+      // TODO handler
+      return;
+    }
+
+    dispatch(logoutUserSuccess());
+  };
+}
+
+async function action({ fetch, store: { dispatch }, params: { userId } }) {
   // const resp = await fetch('/graphql', {
   //   body: JSON.stringify({
   //     query: `{userId:${userId}}`,
@@ -14,9 +43,10 @@ async function action({ params: { userId } }) {
   // if (!data || !data.news) throw new Error('Failed to load the news feed.');
 
   const profileData = {
+    userName: 'Victor',
     categories: [
       {
-        title: 'My videos',
+        title: 'User`s videos',
         content: [
           {
             id: 3333,
@@ -61,13 +91,19 @@ async function action({ params: { userId } }) {
       },
     ],
   };
+  const onLogOut = logoutUserActionCreator(fetch, dispatch);
 
   return {
     chunks: ['user'],
     title,
     component: (
       <Layout>
-        <User userId={userId} title={title} profileData={profileData} />
+        <User
+          userPageId={userId}
+          title={title}
+          profileData={profileData}
+          onLogOut={onLogOut}
+        />
       </Layout>
     ),
   };

@@ -14,7 +14,9 @@ function loginUserActionCreator(fetch, dispatch) {
         query: `
           mutation {
             userLogin(username: "${username}", password: "${password}") {
-              username
+              username,
+              role,
+              id
             }
           }
       `,
@@ -33,6 +35,8 @@ function loginUserActionCreator(fetch, dispatch) {
     dispatch(
       loginUserSuccess({
         username: userLogin.username,
+        id: userLogin.id,
+        role: userLogin.role,
       }),
     );
   };

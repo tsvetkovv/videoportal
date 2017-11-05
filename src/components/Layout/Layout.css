@@ -21,8 +21,7 @@ html {
 
 body {
   margin: 0;
-
-  /* background: url('../../assets/backgroundVP-main.png'); */
+  background: url('../../assets/backgroundVP-main.png');
   background-size: 100%;
 }
 

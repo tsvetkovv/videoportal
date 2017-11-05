@@ -13,6 +13,20 @@
   max-width: var(--max-content-width);
 }
 
+.titleContainer {
+  display: flex;
+  align-items: baseline;
+}
+
+.logout {
+  margin-left: 30px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .newsItem {
   margin: 0 0 2rem;
 }

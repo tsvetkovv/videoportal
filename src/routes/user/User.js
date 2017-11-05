@@ -1,13 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import VideoSmall from '../../components/VideoSmall/VideoSmall';
 import Link from '../../components/Link';
 import s from './User.css';
 
+const mapStateToProps = state => ({
+  isLogin: _.get(state, 'user.isLogin'),
+  userId: _.get(state, 'user.id'),
+});
+
+@connect(mapStateToProps)
 class User extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    onLogOut: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired,
+    userPageId: PropTypes.string.isRequired,
     profileData: PropTypes.shape({
       categories: PropTypes.arrayOf(
         PropTypes.shape({
@@ -26,22 +36,41 @@ class User extends React.Component {
   };
 
   render() {
-    const { profileData: { categories } } = this.props;
+    const {
+      profileData: { userName, categories },
+      onLogOut,
+      userId,
+      userPageId,
+    } = this.props;
 
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{this.props.title}</h1>
+          <div className={s.titleContainer}>
+            <h1>
+              {userId === userPageId ? 'Your profile' : `${userName} profile`}
+            </h1>
+            {userId === userPageId && (
+              <h3
+                role="presentation"
+                className={s.logout}
+                onClick={() => onLogOut()}
+              >
+                Log out
+              </h3>
+            )}
+          </div>
           {categories.map(category => (
             <article key={category.title} className={s.newsItem}>
               <h1 className={s.newsTitle}>{category.title}</h1>
               <div className={s.videosContainer}>
                 {category.content.map(video => <VideoSmall video={video} />)}
-                {category.title === 'My videos' && (
-                  <Link to="/new-video" className={s.addBtn}>
-                    (+) Add new video
-                  </Link>
-                )}
+                {category.title === 'User`s videos' &&
+                  userId === userPageId && (
+                    <Link to="/new-video" className={s.addBtn}>
+                      (+) Add new video
+                    </Link>
+                  )}
               </div>
             </article>
           ))}
