@@ -29,12 +29,14 @@ const UserSchema = new Schema(
       {
         type: Schema.ObjectId,
         ref: 'Video',
+        unique: true,
       },
     ],
     favoriteVideos: [
       {
         type: Schema.ObjectId,
         ref: 'Video',
+        unique: true,
       },
     ],
   },
@@ -86,11 +88,15 @@ class UserClass {
     );
   }
 
-  async claim(userId) {
+  async claim(videoId) {
+    if (this.claimedVideos.includes(videoId)) {
+      return false;
+    }
+
     await this.update(
       {
         $push: {
-          claimedVideos: this.id,
+          claimedVideos: videoId,
         },
       },
       {
@@ -98,22 +104,38 @@ class UserClass {
       },
     ).exec();
 
-    return Video.findOneAndUpdate(
+    await Video.findByIdAndUpdate(
+      videoId,
       {
         $push: {
-          claimedBy: userId,
+          claimedBy: this.id,
         },
-        isWarning:
-          this.claimedBy.length + 1 === CLAIMS_FOR_WARNING_VIDEO ||
-          this.isWarning,
-        isBlocked:
-          this.claimedBy.length + 1 === CLAIMS_FOR_BLOCKING_VIDEO ||
-          this.isBlocked,
+        $set: {
+          isWarning: {
+            $cond: {
+              if: {
+                $gte: ['$claimedBy', CLAIMS_FOR_WARNING_VIDEO],
+              },
+              then: true,
+            },
+          },
+
+          isBlocked: {
+            $cond: {
+              if: {
+                $gte: ['$claimedBy', CLAIMS_FOR_BLOCKING_VIDEO],
+              },
+              then: true,
+            },
+          },
+        },
       },
       {
         safe: true,
       },
     );
+
+    return true;
   }
 
   async like(videoId) {

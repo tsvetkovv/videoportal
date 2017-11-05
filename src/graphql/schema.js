@@ -12,6 +12,7 @@ import userLogout from './mutations/user.logout';
 import userRegister from './mutations/user.register';
 import videoAdd from './mutations/video.add';
 import videoRemove from './mutations/video.remove';
+import videoClaim from './mutations/video.claim';
 
 const schema = new Schema({
   query: new ObjectType({
@@ -31,6 +32,7 @@ const schema = new Schema({
       userRegister,
       videoAdd,
       videoRemove,
+      videoClaim,
     },
   }),
 });
