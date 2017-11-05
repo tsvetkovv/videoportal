@@ -10,7 +10,7 @@ async function action({ fetch, params: { youtubeId } }) {
           youtubeId
           title
           date
-          author {username}
+          author {username, id}
           rating
           likedBy {id}
           dislikedBy {id}
