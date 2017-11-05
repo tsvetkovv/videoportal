@@ -17,9 +17,12 @@ class VideoSmall extends React.Component {
     const userLink = video.author ? `/user/${video.author.id}` : null;
     const videoLink = `/video/${video.youtubeId}`;
     const videoClass = largeVideo ? cx(s.large, s.videoSrc) : s.videoSrc;
+    const videoContainerClass = largeVideo
+      ? cx(s.largeContainer, s.video)
+      : cx(s.smallContainer, s.video);
 
     return (
-      <div className={s.video}>
+      <div className={videoContainerClass}>
         <iframe
           title={video.youtubeId}
           className={videoClass}

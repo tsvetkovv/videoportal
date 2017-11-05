@@ -1,11 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import cx from 'classnames';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
+import _ from 'lodash';
 import { withState } from 'recompose';
 import Link from '../../components/Link';
 import s from './Video.css';
 
+const mapStateToProps = state => ({
+  currentUserId: _.get(state, 'user.id'),
+  currentUserRole: _.get(state, 'user.role'),
+});
+
+@connect(mapStateToProps)
 @withState('modalIsOpen', 'setModalIsOpen', false)
 class Video extends Component {
   static propTypes = {
@@ -15,14 +23,20 @@ class Video extends Component {
       author: PropTypes.string.isRequired,
     }).isRequired,
     setModalIsOpen: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
     modalIsOpen: PropTypes.bool.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
   };
 
   render() {
     const {
       videoData: { title, youtubeId, rating, author: { id, username } },
+      currentUserId,
+      currentUserRole,
       setModalIsOpen,
       modalIsOpen,
+      onRemove,
     } = this.props;
     const customStyles = {
       content: {
@@ -69,7 +83,9 @@ class Video extends Component {
               <div className={cx(s.btn, s.btnLike)}>Like</div>
               <div className={cx(s.btn, s.btnDisLike)}>Dislike</div>
             </div>
-            <a className={s.report}>block the video (will be for admin only)</a>
+            {currentUserRole === 'ADMIN' && (
+              <a className={s.report}>block the video</a>
+            )}
             <a
               role="presentation"
               className={s.report}
@@ -77,6 +93,15 @@ class Video extends Component {
             >
               report the video
             </a>
+            {currentUserId === id && (
+              <a
+                role="presentation"
+                className={s.report}
+                onClick={() => onRemove(youtubeId)}
+              >
+                remove the video
+              </a>
+            )}
           </div>
         </div>
       </div>

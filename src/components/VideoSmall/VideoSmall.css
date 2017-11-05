@@ -6,11 +6,18 @@
   margin-right: 20px;
   position: relative;
   padding-bottom: 20px;
-  width: 210px;
 
   iframe {
     border: 0;
   }
+}
+
+.smallContainer {
+  width: 210px;
+}
+
+.largeContainer {
+  width: 420px;
 }
 
 .videoSrc {
