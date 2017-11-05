@@ -5,6 +5,7 @@ const YOUTUBE_LINK_REGEX = /(\?v=|\/\d\/|\/embed\/|\/v\/|\.be\/)([a-zA-Z0-9\-_]+
  * @param {String} link youtube URL
  * @returns {String} youtube id
  */
-export function getYoutubeId(link) {
-  return link.match(YOUTUBE_LINK_REGEX)[2];
+export function getYoutubeId(link = '') {
+  const match = link.match(YOUTUBE_LINK_REGEX);
+  return match && match[2];
 }
