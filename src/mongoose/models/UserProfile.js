@@ -22,5 +22,6 @@ const UserProfileSchema = new Schema({
   },
 });
 
+delete mongoose.connection.models.UserProfile;
 export default mongoose.model('UserProfile', UserProfileSchema);
 export { UserProfileSchema };

@@ -13,5 +13,6 @@ const UserLoginSchema = new Schema({
   },
 });
 
+delete mongoose.connection.models.UserLogin;
 export default mongoose.model('UserLogin', UserLoginSchema);
 export { UserLoginSchema };

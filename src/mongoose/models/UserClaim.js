@@ -9,5 +9,6 @@ const UserClaimSchema = new Schema({
   },
 });
 
+delete mongoose.connection.models.UserClaim;
 export default mongoose.model('UserClaim', UserClaimSchema);
 export { UserClaimSchema };

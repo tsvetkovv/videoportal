@@ -169,4 +169,5 @@ class UserClass {
 
 UserSchema.loadClass(UserClass);
 
+delete mongoose.connection.models.User;
 export default mongoose.model('User', UserSchema);

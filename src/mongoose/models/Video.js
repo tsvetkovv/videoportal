@@ -13,7 +13,7 @@ const VideoSchema = new Schema(
     },
     date: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
     author: {
       type: Schema.ObjectId,
@@ -79,11 +79,11 @@ class VideoClass {
   }
 
   static async getNewestVideos() {
-    return this.getAllVisibleVideos().sort('rating');
+    return this.getAllVisibleVideos().sort('-date');
   }
 
   static async getPopularVideos() {
-    return this.getAllVisibleVideos().sort('-date');
+    return this.getAllVisibleVideos().sort('rating');
   }
 
   static async getBlockedVideos() {
@@ -95,4 +95,5 @@ class VideoClass {
 
 VideoSchema.loadClass(VideoClass);
 
+delete mongoose.connection.models.Video;
 export default mongoose.model('Video', VideoSchema);
