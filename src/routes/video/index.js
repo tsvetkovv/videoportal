@@ -2,22 +2,25 @@ import React from 'react';
 import Video from './Video';
 import Layout from '../../components/Layout';
 
-async function action({ params: { videoId } }) {
-  // const resp = await fetch('/graphql', {
-  //   body: JSON.stringify({
-  //     query: `{videoId:${videoId}}`,
-  //   }),
-  // });
-  // const { profileData } = await resp.json();
-  // if (!data || !data.news) throw new Error('Failed to load the news feed.');
-
-  const videoData = {
-    addDate: '19-10-2017',
-    rating: '+100500',
-    description: 'VIDEOVIDEOVIDEOVIDEOVIDEOVIDEOVIDEOVIDEOVIDEOVIDEOVIDEO',
-    author: 'Alena',
-    authorId: 2222,
-  };
+async function action({ fetch, params: { youtubeId } }) {
+  const resp = await fetch('/graphql', {
+    body: JSON.stringify({
+      query: `{
+        video(youtubeId: "${youtubeId}") {
+          youtubeId
+          title
+          date
+          author {username}
+          rating
+          likedBy {id}
+          dislikedBy {id}
+          isBlocked
+          isWarning
+        }
+      }`,
+    }),
+  });
+  const { data: { video } } = await resp.json();
   const title = 'Video title';
 
   return {
@@ -25,7 +28,7 @@ async function action({ params: { videoId } }) {
     title,
     component: (
       <Layout>
-        <Video videoId={videoId} videoData={videoData} />
+        <Video videoData={video} />
       </Layout>
     ),
   };

@@ -13,20 +13,18 @@ function action() {
   const adminPageData = {
     reportedVideo: [
       {
-        id: 3333,
         title: 'video1',
         rating: 4.5,
-        link: 'As-Hz6YjbVI',
+        youtubeId: 'D9QxQyx43ig',
         author: {
           id: '59fd72dee251fc133c8ef8e0',
           username: 'alena',
         },
       },
       {
-        id: 5555,
         title: 'video1',
         rating: 4.5,
-        link: 'K5O-lJW6xvg',
+        youtubeId: 'D9QxQyx43ig',
         author: {
           id: '59fd72dee251fc133c8ef8e0',
           username: 'alena',

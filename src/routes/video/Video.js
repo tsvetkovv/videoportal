@@ -12,24 +12,17 @@ class Video extends Component {
     videoData: PropTypes.shape({
       title: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-      description: PropTypes.string.isRequired,
       author: PropTypes.string.isRequired,
-      setModalIsOpen: PropTypes.func.isRequired,
-      modalIsOpen: PropTypes.bool.isRequired,
     }).isRequired,
+    setModalIsOpen: PropTypes.func.isRequired,
+    modalIsOpen: PropTypes.bool.isRequired,
   };
 
   render() {
     const {
-      videoData: {
-        title,
-        youtubeId,
-        rating,
-        description,
-        author: { id, username },
-        modalIsOpen,
-        setModalIsOpen,
-      },
+      videoData: { title, youtubeId, rating, author: { id, username } },
+      setModalIsOpen,
+      modalIsOpen,
     } = this.props;
     const customStyles = {
       content: {
@@ -63,10 +56,9 @@ class Video extends Component {
               className={s.videoContent}
               src={`https://www.youtube.com/embed/${youtubeId}`}
             />
-            <h1>{title}</h1>
-            <h4>{rating}</h4>
+            <h2>{title}</h2>
+            <h4>Rating: {rating}</h4>
             <Link to={userLink}>{username}</Link>
-            <p>{description}</p>
           </div>
           <div className={s.markContainer}>
             <div className={s.btnGroup}>
@@ -77,13 +69,7 @@ class Video extends Component {
               <div className={cx(s.btn, s.btnLike)}>Like</div>
               <div className={cx(s.btn, s.btnDisLike)}>Dislike</div>
             </div>
-            <a
-              role="presentation"
-              className={s.report}
-              onClick={() => setModalIsOpen(true)}
-            >
-              block the video (will be for admin only)
-            </a>
+            <a className={s.report}>block the video (will be for admin only)</a>
             <a
               role="presentation"
               className={s.report}
