@@ -1,69 +1,54 @@
 import mongoose, { Schema } from 'mongoose';
 import { RATING_FOR_HIDING_VIDEO } from '../../constants';
 
-const VideoSchema = new Schema(
-  {
-    link: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
-    author: {
+const VideoSchema = new Schema({
+  youtubeId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  author: {
+    type: Schema.ObjectId,
+    required: true,
+    ref: 'User',
+  },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  likedBy: [
+    {
       type: Schema.ObjectId,
-      required: true,
       ref: 'User',
     },
-    rating: {
-      type: Number,
-      default: 0,
+  ],
+  dislikedBy: [
+    {
+      type: Schema.ObjectId,
+      ref: 'User',
     },
-    likedBy: [
-      {
-        type: Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
-    dislikedBy: [
-      {
-        type: Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
-    claimedBy: [
-      {
-        type: Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
-    isBlocked: {
-      type: Boolean,
+  ],
+  claimedBy: [
+    {
+      type: Schema.ObjectId,
+      ref: 'User',
     },
-    isWarning: {
-      type: Boolean,
-    },
+  ],
+  isBlocked: {
+    type: Boolean,
   },
-  {
-    toObject: {
-      transform: (doc, ret) => {
-        ret.id = ret._id; // eslint-disable-line  no-underscore-dangle, no-param-reassign
-        delete ret._id; // eslint-disable-line  no-underscore-dangle, no-param-reassign
-      },
-    },
-    toJSON: {
-      transform: (doc, ret) => {
-        ret.id = ret._id; // eslint-disable-line  no-underscore-dangle, no-param-reassign
-        delete ret._id; // eslint-disable-line  no-underscore-dangle, no-param-reassign
-      },
-    },
+  isWarning: {
+    type: Boolean,
   },
-);
+});
 
 VideoSchema.pre('remove', (next, done) => {
   done();

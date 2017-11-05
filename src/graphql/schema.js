@@ -8,6 +8,7 @@ import news from './queries/news';
 import userLogin from './mutations/user.login';
 import userLogout from './mutations/user.logout';
 import userRegister from './mutations/user.register';
+import videoAdd from './mutations/video.add';
 
 const schema = new Schema({
   query: new ObjectType({
@@ -23,6 +24,7 @@ const schema = new Schema({
       userLogin,
       userLogout,
       userRegister,
+      videoAdd,
     },
   }),
 });

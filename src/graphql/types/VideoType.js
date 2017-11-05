@@ -2,7 +2,6 @@ import {
   GraphQLNonNull,
   GraphQLList,
   GraphQLObjectType,
-  GraphQLID,
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
@@ -12,8 +11,7 @@ import UserType from './UserType';
 const VideoType = new GraphQLObjectType({
   name: 'Video',
   fields: () => ({
-    id: { type: new GraphQLNonNull(GraphQLID) },
-    link: { type: new GraphQLNonNull(GraphQLString) },
+    youtubeId: { type: new GraphQLNonNull(GraphQLString) },
     title: { type: new GraphQLNonNull(GraphQLString) },
     date: { type: new GraphQLNonNull(GraphQLString) },
     author: { type: new GraphQLNonNull(UserType) },

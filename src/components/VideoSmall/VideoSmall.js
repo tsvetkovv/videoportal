@@ -14,7 +14,7 @@ class VideoSmall extends React.Component {
   render() {
     const { video, largeVideo } = this.props;
     const userLink = `/user/${video.author.id}`;
-    const videoLink = `/video/${video.id}`;
+    const videoLink = `/video/${video.youtubeId}`;
     const videoClass = largeVideo ? cx(s.large, s.videoSrc) : s.videoSrc;
 
     return (

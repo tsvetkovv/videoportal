@@ -1,32 +1,23 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import NewVideo from './NewVideo';
+import { getYoutubeId } from '../../common/helpers';
 
 const title = 'Add new video';
 
 function addVideoCreator(fetch) {
   return async (link, name) => {
-    const date = Date.now();
-    const author = 'Current User';
+    const youtubeId = getYoutubeId(link);
+
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
-       mutation {
-        addVideo(link: "${link}", name: "${name}", date: "${date}", author: "${author}") {
-           video {
-             id,
-             link,
-             name,
-             rating,
-             author,
-             date
-           },
-          errors {
-            message,
-            key
+          mutation {
+            videoAdd(title: "${name}", youtubeId: "${youtubeId}") {
+              youtubeId
+              title
+            }
           }
-        }
-      }
       `,
       }),
       credentials: 'include',
@@ -34,7 +25,7 @@ function addVideoCreator(fetch) {
 
     const { errors } = await resp.json();
 
-    if (errors.length) {
+    if (errors && errors.length) {
       console.error(errors);
     }
   };
