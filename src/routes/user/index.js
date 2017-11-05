@@ -13,9 +13,7 @@ function logoutUserActionCreator(fetch, dispatch) {
       body: JSON.stringify({
         query: `
           mutation {
-            userLogout {
-             id
-            }
+            userLogout
           }
       `,
       }),

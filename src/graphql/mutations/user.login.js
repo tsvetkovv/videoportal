@@ -1,7 +1,4 @@
-import {
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
@@ -10,8 +7,8 @@ import { handleAuth } from '../helpers/auth';
 const userLogin = {
   type: UserType,
   args: {
-    username: { type: new NonNull(StringType) },
-    password: { type: new NonNull(StringType) },
+    username: { type: new GraphQLNonNull(GraphQLString) },
+    password: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async ({ req, res }, { username, password }) => {
     const errors = [];

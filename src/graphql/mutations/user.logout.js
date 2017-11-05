@@ -1,7 +1,7 @@
-import UserType from '../types/UserType';
+import { GraphQLBoolean } from 'graphql';
 
 const userLogout = {
-  type: UserType,
+  type: GraphQLBoolean,
   // pass res in src/server.js
   resolve({ res }) {
     res.clearCookie('id_token');

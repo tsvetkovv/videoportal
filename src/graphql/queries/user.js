@@ -1,4 +1,4 @@
-import { GraphQLString } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import UserType from '../types/UserType';
 import User from '../../mongoose/models/User';
 import ErrorType from '../types/ErrorType';
@@ -6,17 +6,17 @@ import ErrorType from '../types/ErrorType';
 const userQuery = {
   type: UserType,
   args: {
-    username: { type: GraphQLString },
+    id: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async ({ req }, { username }) => {
+  resolve: async ({ req }, { id: userId }) => {
     const errors = [];
 
     if (req.user) {
       let user = req.user;
 
-      if (username) {
+      if (userId) {
         const foundUser = await User.getFullProfile({
-          username,
+          _id: userId,
         });
 
         if (foundUser) {
@@ -24,7 +24,7 @@ const userQuery = {
         } else {
           errors.push({
             key: 'notFound',
-            message: `User is not found with username: ${username}`,
+            message: `User is not found with id: ${userId}`,
           });
         }
       }
