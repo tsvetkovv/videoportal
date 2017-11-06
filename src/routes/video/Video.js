@@ -94,7 +94,7 @@ class Video extends Component {
             >
               report the video
             </a>
-            {currentUserId === id && (
+            {(currentUserId === id || currentUserRole === 'ADMIN') && (
               <a
                 role="presentation"
                 className={s.report}

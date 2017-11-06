@@ -31,7 +31,7 @@ class Admin extends React.Component {
           {!blamedVideos.length && <h2>There is no blamed videos</h2>}
           {blamedVideos.map(video => (
             <div className={s.videoContainer}>
-              <VideoSmall video={video} largeVideo deleteIcon />
+              <VideoSmall video={video} largeVideo />
               <div>
                 <a className={s.adminBtn}>mark as good</a>
               </div>

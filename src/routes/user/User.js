@@ -63,9 +63,7 @@ class User extends React.Component {
           <article className={s.newsItem}>
             <h1 className={s.newsTitle}>User`s videos</h1>
             <div className={s.videosContainer}>
-              {ownVideos.map(video => (
-                <VideoSmall video={video} deleteIcon={isYourProfile} />
-              ))}
+              {ownVideos.map(video => <VideoSmall video={video} />)}
               {isYourProfile && (
                 <Link to="/new-video" className={s.addBtn}>
                   (+) Add new video
