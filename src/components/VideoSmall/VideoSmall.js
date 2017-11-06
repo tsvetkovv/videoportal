@@ -19,15 +19,14 @@ class VideoSmall extends React.Component {
     const videoContainerClass = largeVideo
       ? cx(s.largeContainer, s.video)
       : cx(s.smallContainer, s.video);
+    const thumbnailImage = `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`;
 
     return (
       <div className={videoContainerClass}>
-        <iframe
-          title={video.youtubeId}
-          className={videoClass}
-          src={`https://www.youtube.com/embed/${video.youtubeId}`}
-        />
-        <Link to={videoLink}>{video.title}</Link>
+        <Link to={videoLink}>
+          <img alt="video" className={videoClass} src={thumbnailImage} />
+          {video.title}
+        </Link>
         {video.author && <Link to={userLink}>{video.author.username}</Link>}
       </div>
     );
