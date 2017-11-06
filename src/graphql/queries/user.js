@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString } from 'graphql';
 import UserType from '../types/UserType';
 import { User, Video } from '../../mongoose/models';
 import ErrorType from '../types/ErrorType';
@@ -6,10 +6,11 @@ import ErrorType from '../types/ErrorType';
 const userQuery = {
   type: UserType,
   args: {
-    id: { type: new GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLString },
   },
-  resolve: async (_, { id: userId }) => {
+  resolve: async ({ req }, { id }) => {
     const errors = [];
+    const userId = id || req.user.id;
 
     let user = null;
 

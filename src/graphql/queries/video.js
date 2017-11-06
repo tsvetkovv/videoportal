@@ -8,10 +8,13 @@ const videoQuery = {
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async (_, { youtubeId }) => {
+  resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
 
     const foundVideo = await Video.findOne({ youtubeId }).populate('author');
+    foundVideo.isFavorite = user.favoriteVideos.some(video =>
+      video.equals(foundVideo.id),
+    );
 
     if (errors.length) {
       throw new ErrorType(errors);

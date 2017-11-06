@@ -21,6 +21,7 @@ const VideoType = new GraphQLObjectType({
     claimedBy: { type: new GraphQLList(UserType) },
     isBlocked: { type: GraphQLBoolean },
     isWarning: { type: GraphQLBoolean },
+    isFavorite: { type: GraphQLBoolean },
   }),
 });
 

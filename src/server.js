@@ -55,7 +55,7 @@ app.use(async (req, res, next) => {
   if (token) {
     try {
       const { id } = jwt.verify(token, config.auth.jwt.secret);
-      const user = (await User.findById(id)).toObject();
+      const user = await User.findById(id);
       if (user) {
         req.user = user; // eslint-disable-line no-param-reassign
       }

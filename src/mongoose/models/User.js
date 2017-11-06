@@ -72,7 +72,10 @@ class UserClass {
   static getFullProfile(query) {
     return this.findOne(query)
       .populate('claimedVideos')
-      .populate('favoriteVideos');
+      .populate({
+        path: 'favoriteVideos',
+        populate: { path: 'author' },
+      });
   }
 
   async addToFavorite(videoId) {
@@ -87,6 +90,12 @@ class UserClass {
       },
     );
   }
+
+  /* eslint-disable class-methods-use-this, no-unused-vars */
+  async removeFromFavorite(videoId) {
+    // TODO (meis) TBD
+  }
+  /* eslint-enable class-methods-use-this, no-unused-vars */
 
   async claim(videoId) {
     if (this.claimedVideos.includes(videoId)) {
@@ -176,10 +185,6 @@ class UserClass {
         safe: true,
       },
     );
-  }
-
-  async createVideo(video) {
-    return Video.create(...video, { author: this.id });
   }
 }
 

@@ -13,6 +13,10 @@ import userRegister from './mutations/user.register';
 import videoAdd from './mutations/video.add';
 import videoRemove from './mutations/video.remove';
 import videoClaim from './mutations/video.claim';
+import videoFav from './mutations/video.fav';
+import videoUnfav from './mutations/video.unfav';
+import videoLike from './mutations/video.like';
+import videoDislike from './mutations/video.dislike';
 
 const schema = new Schema({
   query: new ObjectType({
@@ -33,6 +37,10 @@ const schema = new Schema({
       videoAdd,
       videoRemove,
       videoClaim,
+      videoFav,
+      videoUnfav,
+      videoLike,
+      videoDislike,
     },
   }),
 });
