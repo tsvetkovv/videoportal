@@ -27,6 +27,48 @@ function removeVideoCreator(fetch, id) {
   };
 }
 
+function favVideoCreator(fetch) {
+  return async youtubeId => {
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            videoFav(youtubeId: "${youtubeId}")
+          }
+        `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+
+    if (errors && errors.length) {
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
+    }
+  };
+}
+
+function unfavVideoCreator(fetch) {
+  return async youtubeId => {
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            videoUnfav(youtubeId: "${youtubeId}")
+          }
+        `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+
+    if (errors && errors.length) {
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
+    }
+  };
+}
+
 async function action({ fetch, params: { youtubeId }, store }) {
   const resp = await fetch('/graphql', {
     body: JSON.stringify({
@@ -56,13 +98,20 @@ async function action({ fetch, params: { youtubeId }, store }) {
   const title = video.title;
   const { user } = store.getState();
   const onRemove = user && removeVideoCreator(fetch, user.id);
+  const onFav = favVideoCreator(fetch);
+  const onUnfav = unfavVideoCreator(fetch);
 
   return {
     chunks: ['video'],
     title,
     component: (
       <Layout>
-        <Video videoData={video} onRemove={onRemove} />
+        <Video
+          videoData={video}
+          onRemove={onRemove}
+          onFav={onFav}
+          onUnfav={onUnfav}
+        />
       </Layout>
     ),
   };

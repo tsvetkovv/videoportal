@@ -25,6 +25,8 @@ class Video extends Component {
     }).isRequired,
     setModalIsOpen: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
+    onFav: PropTypes.func.isRequired,
+    onUnfav: PropTypes.func.isRequired,
     modalIsOpen: PropTypes.bool.isRequired,
     currentUserId: PropTypes.string.isRequired,
     currentUserRole: PropTypes.string.isRequired,
@@ -38,6 +40,8 @@ class Video extends Component {
       setModalIsOpen,
       modalIsOpen,
       onRemove,
+      onFav,
+      onUnfav,
     } = this.props;
     const customStyles = {
       content: {
@@ -77,8 +81,20 @@ class Video extends Component {
           </div>
           <div className={s.markContainer}>
             <div className={s.btnGroup}>
-              <div className={cx(s.btn, s.btnFav)}>FAV</div>
-              <div className={cx(s.btn, s.btnUnFav)}>UNFAV</div>
+              <div
+                role="presentation"
+                onClick={() => onFav(youtubeId)}
+                className={cx(s.btn, s.btnFav)}
+              >
+                FAV
+              </div>
+              <div
+                role="presentation"
+                onClick={() => onUnfav(youtubeId)}
+                className={cx(s.btn, s.btnUnFav)}
+              >
+                UNFAV
+              </div>
             </div>
             <div className={s.btnGroup}>
               <div className={cx(s.btn, s.btnLike)}>Like</div>
