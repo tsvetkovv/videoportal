@@ -17,7 +17,7 @@ class ErrorPage extends React.Component {
   };
 
   render() {
-    if (__DEV__ && this.props.error) {
+    if (/* __DEV__ && */ this.props.error) {
       return (
         <div>
           <h1>{this.props.error.name}</h1>
