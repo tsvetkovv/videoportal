@@ -78,9 +78,10 @@ class Html extends React.Component {
               defer
             />
           )}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: ` if ('serviceWorker' in navigator) {
+          {config.serviceWorker && (
+            <script
+              dangerouslySetInnerHTML={{
+                __html: ` if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
               navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
                 // Registration was successful
@@ -95,8 +96,9 @@ class Html extends React.Component {
           } else {
             console.log('service worker is not supported');
           }`,
-            }}
-          />
+              }}
+            />
+          )}
           <script />
         </body>
       </html>
