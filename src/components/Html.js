@@ -32,13 +32,21 @@ class Html extends React.Component {
         <head>
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          <meta name="theme-color" content="#262840" />
+          <meta name="msapplication-navbutton-color" content="#262840" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="#262840"
+          />
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {scripts.map(script => (
             <link key={script} rel="preload" href={script} as="script" />
           ))}
-          <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <link rel="manifest" href="/manifest.json" />
+
           {styles.map(style => (
             <style
               key={style.id}
@@ -70,6 +78,26 @@ class Html extends React.Component {
               defer
             />
           )}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: ` if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+              }).catch(function(err) {
+                console.log(err)
+              });
+            });
+          } else {
+            console.log('service worker is not supported');
+          }`,
+            }}
+          />
+          <script />
         </body>
       </html>
     );

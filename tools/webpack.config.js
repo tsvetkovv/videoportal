@@ -306,6 +306,7 @@ const clientConfig = {
     new AssetsPlugin({
       path: path.resolve(__dirname, '../build'),
       filename: 'assets.json',
+      includeManifest: true,
       prettyPrint: true,
     }),
 

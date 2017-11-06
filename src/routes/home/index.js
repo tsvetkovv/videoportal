@@ -23,7 +23,7 @@ async function action({ fetch }) {
 
   return {
     chunks: ['home'],
-    title: 'React Starter Kit',
+    title: 'Video portal',
     component: (
       <Layout>
         <Home homeData={data} />

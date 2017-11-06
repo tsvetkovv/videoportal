@@ -102,6 +102,10 @@ app.use(
   })),
 );
 
+app.get('/assets.json', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'assets.json')),
+);
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
