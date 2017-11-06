@@ -46,9 +46,16 @@ async function action({ fetch, params: { youtubeId }, store }) {
     }),
   });
   const { data: { video } } = await resp.json();
-  const title = 'Video title';
-  const { user: { id } } = store.getState();
-  const onRemove = removeVideoCreator(fetch, id);
+
+  if (!video) {
+    return {
+      redirect: '/not-found',
+    };
+  }
+
+  const title = video.title;
+  const { user } = store.getState();
+  const onRemove = user && removeVideoCreator(fetch, user.id);
 
   return {
     chunks: ['video'],
