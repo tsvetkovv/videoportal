@@ -81,7 +81,7 @@ class UserClass {
   async addToFavorite(videoId) {
     return this.update(
       {
-        $push: {
+        $addToSet: {
           favoriteVideos: videoId,
         },
       },
@@ -91,11 +91,18 @@ class UserClass {
     );
   }
 
-  /* eslint-disable class-methods-use-this, no-unused-vars */
   async removeFromFavorite(videoId) {
-    // TODO (meis) TBD
+    return this.update(
+      {
+        $pull: {
+          favoriteVideos: videoId,
+        },
+      },
+      {
+        safe: true,
+      },
+    );
   }
-  /* eslint-enable class-methods-use-this, no-unused-vars */
 
   async claim(videoId) {
     if (this.claimedVideos.includes(videoId)) {
@@ -104,7 +111,7 @@ class UserClass {
 
     await this.update(
       {
-        $push: {
+        $addToSet: {
           claimedVideos: videoId,
         },
       },
@@ -116,7 +123,7 @@ class UserClass {
     await Video.findByIdAndUpdate(
       videoId,
       {
-        $push: {
+        $addToSet: {
           claimedBy: this.id,
         },
         $set: {
@@ -151,14 +158,11 @@ class UserClass {
     return Video.findOneAndUpdate(
       videoId,
       {
-        $push: {
+        $addToSet: {
           likedBy: this.id,
         },
         $pull: {
           dislikedBy: this.id,
-        },
-        $inc: {
-          rating: 1,
         },
       },
       {
@@ -171,14 +175,11 @@ class UserClass {
     return Video.findOneAndUpdate(
       videoId,
       {
-        $push: {
+        $addToSet: {
           dislikedBy: this.id,
         },
         $pull: {
           likedBy: this.id,
-        },
-        $inc: {
-          rating: -1,
         },
       },
       {
