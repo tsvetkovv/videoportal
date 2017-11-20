@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { RATING_FOR_HIDING_VIDEO } from '../../constants';
+import { RATING_FOR_HIDING_VIDEO, DEFAULT_VIDEO_LIMIT } from '../../constants';
 
 const VideoSchema = new Schema({
   youtubeId: {
@@ -58,21 +58,52 @@ VideoSchema.pre('remove', (next, done) => {
 });
 
 class VideoClass {
-  static getAllVisibleVideos(limit) {
-    return this.find({
-      isBlocked: false,
-      rating: { $gt: RATING_FOR_HIDING_VIDEO },
-    })
-      .limit(limit)
-      .populate('author');
+  static async commonAllVisibleQuery(additionalPipeLine = [], limit) {
+    const aggregatedVideos = await this.aggregate([
+      {
+        $limit: limit || DEFAULT_VIDEO_LIMIT,
+      },
+      {
+        $addFields: {
+          rating_for_sort: {
+            $subtract: [
+              { $add: { $size: '$likedBy' } },
+              { $size: '$dislikedBy' },
+            ],
+          },
+        },
+      },
+      {
+        $match: {
+          isBlocked: false,
+          rating_for_sort: { $gte: RATING_FOR_HIDING_VIDEO },
+        },
+      },
+      ...additionalPipeLine,
+    ]).exec();
+    return this.populate(aggregatedVideos, 'author');
   }
 
   static async getNewestVideos(limit) {
-    return this.getAllVisibleVideos(limit).sort({ date: -1 });
+    return this.commonAllVisibleQuery(
+      [
+        {
+          $sort: { date: -1 },
+        },
+      ],
+      limit,
+    );
   }
 
   static async getPopularVideos(limit) {
-    return this.getAllVisibleVideos(limit).sort({ rating: 1, date: -1 });
+    return this.commonAllVisibleQuery(
+      [
+        {
+          $sort: { rating_for_sort: -1, date: -1 },
+        },
+      ],
+      limit,
+    );
   }
 
   static async getBlockedVideos() {
