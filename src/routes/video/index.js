@@ -69,6 +69,69 @@ function unfavVideoCreator(fetch) {
   };
 }
 
+function likeVideoCreator(fetch) {
+  return async youtubeId => {
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            videoLike(youtubeId: "${youtubeId}")
+          }
+        `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+
+    if (errors && errors.length) {
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
+    }
+  };
+}
+
+function dislikeVideoCreator(fetch) {
+  return async youtubeId => {
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            videoDislike(youtubeId: "${youtubeId}")
+          }
+        `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+
+    if (errors && errors.length) {
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
+    }
+  };
+}
+
+function claimVideoCreator(fetch) {
+  return async youtubeId => {
+    const resp = await fetch('/graphql', {
+      body: JSON.stringify({
+        query: `
+          mutation {
+            videoClaim(youtubeId: "${youtubeId}")
+          }
+        `,
+      }),
+      credentials: 'include',
+    });
+
+    const { errors } = await resp.json();
+
+    if (errors && errors.length) {
+      alert(`Error: ${errors[0].state[errors[0].message]}`);
+    }
+  };
+}
+
 async function action({ fetch, params: { youtubeId }, store }) {
   const resp = await fetch('/graphql', {
     body: JSON.stringify({
@@ -100,6 +163,9 @@ async function action({ fetch, params: { youtubeId }, store }) {
   const onRemove = user && removeVideoCreator(fetch, user.id);
   const onFav = favVideoCreator(fetch);
   const onUnfav = unfavVideoCreator(fetch);
+  const onLike = likeVideoCreator(fetch);
+  const onDislike = dislikeVideoCreator(fetch);
+  const onClaim = claimVideoCreator(fetch);
 
   return {
     chunks: ['video'],
@@ -111,6 +177,9 @@ async function action({ fetch, params: { youtubeId }, store }) {
           onRemove={onRemove}
           onFav={onFav}
           onUnfav={onUnfav}
+          onLike={onLike}
+          onDislike={onDislike}
+          onClaim={onClaim}
         />
       </Layout>
     ),

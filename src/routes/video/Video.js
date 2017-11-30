@@ -27,6 +27,9 @@ class Video extends Component {
     onRemove: PropTypes.func.isRequired,
     onFav: PropTypes.func.isRequired,
     onUnfav: PropTypes.func.isRequired,
+    onLike: PropTypes.func.isRequired,
+    onDislike: PropTypes.func.isRequired,
+    onClaim: PropTypes.func.isRequired,
     modalIsOpen: PropTypes.bool.isRequired,
     currentUserId: PropTypes.string.isRequired,
     currentUserRole: PropTypes.string.isRequired,
@@ -42,6 +45,9 @@ class Video extends Component {
       onRemove,
       onFav,
       onUnfav,
+      onLike,
+      onDislike,
+      onClaim,
     } = this.props;
     const customStyles = {
       content: {
@@ -97,8 +103,20 @@ class Video extends Component {
               </div>
             </div>
             <div className={s.btnGroup}>
-              <div className={cx(s.btn, s.btnLike)}>Like</div>
-              <div className={cx(s.btn, s.btnDisLike)}>Dislike</div>
+              <div
+                role="presentation"
+                onClick={() => onLike(youtubeId)}
+                className={cx(s.btn, s.btnLike)}
+              >
+                Like
+              </div>
+              <div
+                role="presentation"
+                onClick={() => onDislike(youtubeId)}
+                className={cx(s.btn, s.btnDisLike)}
+              >
+                Dislike
+              </div>
             </div>
             {currentUserRole === 'ADMIN' && (
               <a className={s.report}>block the video</a>
@@ -106,7 +124,10 @@ class Video extends Component {
             <a
               role="presentation"
               className={s.report}
-              onClick={() => setModalIsOpen(true)}
+              onClick={() => {
+                onClaim(youtubeId);
+                setModalIsOpen(true);
+              }}
             >
               report the video
             </a>

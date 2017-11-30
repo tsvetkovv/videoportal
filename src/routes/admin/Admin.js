@@ -18,25 +18,33 @@ class Admin extends React.Component {
         rating: PropTypes.number.isRequired,
       }),
     ).isRequired,
+    onClearClaims: PropTypes.func.isRequired,
   };
 
   render() {
-    const { blamedVideos } = this.props;
+    const { blamedVideos, onClearClaims } = this.props;
 
     return (
       <div className={s.root}>
         <div className={s.container}>
           <h1>{this.props.title}</h1>
           <h2>Moderation List</h2>
-          {!blamedVideos.length && <h2>There is no blamed videos</h2>}
-          {blamedVideos.map(video => (
-            <div className={s.videoContainer}>
-              <VideoSmall video={video} largeVideo />
-              <div>
-                <a className={s.adminBtn}>mark as good</a>
+          {!blamedVideos && <h2>There is no blamed videos</h2>}
+          {blamedVideos &&
+            blamedVideos.map(video => (
+              <div className={s.videoContainer}>
+                <VideoSmall video={video} largeVideo />
+                <div>
+                  <a
+                    role="presentation"
+                    onClick={() => onClearClaims(video.youtubeId)}
+                    className={s.adminBtn}
+                  >
+                    mark as good
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     );
