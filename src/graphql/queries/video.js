@@ -22,6 +22,11 @@ const videoQuery = {
       foundVideo.isFavorite = user.favoriteVideos.some(video =>
         video.equals(foundVideo.id),
       );
+      foundVideo.isLiked = foundVideo.likedBy.some(u => u.equals(user.id));
+      foundVideo.isDisliked = foundVideo.dislikedBy.some(u =>
+        u.equals(user.id),
+      );
+      foundVideo.isClaimed = foundVideo.claimedBy.some(u => u.equals(user.id));
     }
 
     if (errors.length) {

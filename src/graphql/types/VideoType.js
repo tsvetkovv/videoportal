@@ -18,10 +18,12 @@ const VideoType = new GraphQLObjectType({
     rating: { type: new GraphQLNonNull(GraphQLInt) },
     likedBy: { type: new GraphQLList(UserType) },
     dislikedBy: { type: new GraphQLList(UserType) },
-    claimedBy: { type: new GraphQLList(UserType) },
-    isBlocked: { type: GraphQLBoolean },
-    isWarning: { type: GraphQLBoolean },
-    isFavorite: { type: GraphQLBoolean },
+    isBlocked: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isWarning: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isFavorite: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isLiked: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isDisliked: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isClaimed: { type: new GraphQLNonNull(GraphQLBoolean) },
   }),
 });
 
