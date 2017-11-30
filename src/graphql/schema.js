@@ -6,7 +6,6 @@ import {
 import user from './queries/user';
 import video from './queries/video';
 import videos from './queries/videos';
-import news from './queries/news';
 import userLogin from './mutations/user.login';
 import userLogout from './mutations/user.logout';
 import userRegister from './mutations/user.register';
@@ -25,7 +24,6 @@ const schema = new Schema({
       user,
       video,
       videos,
-      news,
     },
   }),
   mutation: new ObjectType({
