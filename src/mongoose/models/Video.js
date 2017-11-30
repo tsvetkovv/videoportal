@@ -66,13 +66,11 @@ VideoSchema.virtual('rating').get(function() {
 });
 
 VideoSchema.virtual('isWarning').get(function() {
-  // TODO to think about formula without conditions
-  return this.claimedBy.length > CLAIMS_FOR_WARNING_VIDEO;
+  return this.checkWarning();
 });
 
 VideoSchema.virtual('isBlocked').get(function() {
-  // TODO to think about formula without conditions
-  return this.claimedBy.length > CLAIMS_FOR_BLOCKING_VIDEO;
+  return this.checkBlock();
 });
 
 class VideoClass {
@@ -102,6 +100,14 @@ class VideoClass {
     return this.populate(aggregatedVideos, 'author');
   }
 
+  checkWarning() {
+    return this.claimedBy.length >= CLAIMS_FOR_WARNING_VIDEO;
+  }
+
+  checkBlock() {
+    return this.claimedBy.length >= CLAIMS_FOR_BLOCKING_VIDEO;
+  }
+
   static async getNewestVideos(limit) {
     return this.commonAllVisibleQuery(
       [
@@ -125,8 +131,9 @@ class VideoClass {
   }
 
   static async getBlockedVideos() {
+    // TODO optimizable
     return this.find({
-      $or: [{ isWarning: true }, { isBlocked: true }],
+      $where: 'this.checkWarning()',
     });
   }
 }
