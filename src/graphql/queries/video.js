@@ -12,9 +12,12 @@ const videoQuery = {
     const errors = [];
 
     const foundVideo = await Video.findOne({ youtubeId }).populate('author');
-    foundVideo.isFavorite = user.favoriteVideos.some(video =>
-      video.equals(foundVideo.id),
-    );
+
+    if (user) {
+      foundVideo.isFavorite = user.favoriteVideos.some(video =>
+        video.equals(foundVideo.id),
+      );
+    }
 
     if (errors.length) {
       throw new ErrorType(errors);
