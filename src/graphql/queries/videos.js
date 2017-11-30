@@ -27,7 +27,7 @@ const videosQuery = {
       foundVideo = await Video.getBlockedVideos();
     } else {
       errors.push({
-        key: 'accessDenied',
+        key: 'access_denied',
         message: 'You do not have permission',
       });
     }

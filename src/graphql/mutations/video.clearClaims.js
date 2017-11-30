@@ -4,40 +4,38 @@ import { Video } from '../../mongoose/models';
 import { YOUTUBE_ID_REGEX } from '../../common/helpers';
 import { USER_ROLES } from '../../constants';
 
-const videoRemove = {
+const videoClearClaims = {
   type: GraphQLBoolean,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
-    const video = null;
+    let res = false;
 
     if (user) {
-      if (youtubeId.match(YOUTUBE_ID_REGEX)) {
-        const foundVideo = await Video.findOne({ youtubeId });
-        if (foundVideo) {
-          if (
-            user === USER_ROLES.admin ||
-            foundVideo.author.toString() === user.id.toString()
-          ) {
-            await Video.findByIdAndRemove(foundVideo.id);
+      if (user.role === USER_ROLES.admin) {
+        if (youtubeId.match(YOUTUBE_ID_REGEX)) {
+          const foundVideo = await Video.findOne({ youtubeId });
+          if (foundVideo) {
+            // TODO (meis) making clear all claims for the video
+            res = null; // TODO TBD
           } else {
             errors.push({
-              key: 'access_denied',
-              message: 'You do not have permission',
+              key: 'not_found',
+              message: 'Video with this id is not exist',
             });
           }
         } else {
           errors.push({
-            key: 'not_found',
-            message: 'Video with this id is not exist',
+            key: 'incorrect_id',
+            message: 'Incorrect youtube id',
           });
         }
       } else {
         errors.push({
-          key: 'incorrect_id',
-          message: 'Incorrect youtube id',
+          key: 'access_denied',
+          message: 'You do not have permission',
         });
       }
     } else {
@@ -51,8 +49,8 @@ const videoRemove = {
       throw new ErrorType(errors);
     }
 
-    return video;
+    return res;
   },
 };
 
-export default videoRemove;
+export default videoClearClaims;

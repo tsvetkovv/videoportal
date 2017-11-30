@@ -3,7 +3,7 @@ import ErrorType from '../types/ErrorType';
 import { Video } from '../../mongoose/models';
 import { YOUTUBE_ID_REGEX } from '../../common/helpers';
 
-const videoFav = {
+const videoDislike = {
   type: GraphQLBoolean,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
@@ -44,4 +44,4 @@ const videoFav = {
   },
 };
 
-export default videoFav;
+export default videoDislike;

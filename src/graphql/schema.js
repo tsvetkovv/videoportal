@@ -12,6 +12,7 @@ import userRegister from './mutations/user.register';
 import videoAdd from './mutations/video.add';
 import videoRemove from './mutations/video.remove';
 import videoClaim from './mutations/video.claim';
+import videoClearClaims from './mutations/video.clearClaims';
 import videoFav from './mutations/video.fav';
 import videoUnfav from './mutations/video.unfav';
 import videoLike from './mutations/video.like';
@@ -35,6 +36,7 @@ const schema = new Schema({
       videoAdd,
       videoRemove,
       videoClaim,
+      videoClearClaims,
       videoFav,
       videoUnfav,
       videoLike,
