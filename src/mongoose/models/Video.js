@@ -1,5 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
-import { RATING_FOR_HIDING_VIDEO, DEFAULT_VIDEO_LIMIT } from '../../constants';
+import {
+  CLAIMS_FOR_BLOCKING_VIDEO,
+  CLAIMS_FOR_WARNING_VIDEO,
+  DEFAULT_VIDEO_LIMIT,
+  RATING_FOR_HIDING_VIDEO,
+} from '../../constants';
 
 const VideoSchema = new Schema({
   youtubeId: {
@@ -20,10 +25,6 @@ const VideoSchema = new Schema({
     required: true,
     ref: 'User',
   },
-  rating: {
-    type: Number,
-    default: 0,
-  },
   likedBy: [
     {
       type: Schema.ObjectId,
@@ -42,19 +43,36 @@ const VideoSchema = new Schema({
       ref: 'User',
     },
   ],
-  isBlocked: {
-    type: Boolean,
-    default: false,
-  },
-  isWarning: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 VideoSchema.pre('remove', (next, done) => {
   done();
   // TODO : ADD CASCADE DELETION FROM FAVORITE AND CLAIMED FOR AUTHOR
+});
+
+VideoSchema.virtual('rating').get(function() {
+  // // TODO to think about formula without conditions
+  // // -100 when only dislikes, 100 when only likes, otherwise scaling between ones
+  // if (this.dislikedBy.length && !this.likedBy.length) return -100;
+  // if (!this.dislikedBy.length && !this.likedBy.length) return 0;
+  // if (!this.dislikedBy.length && this.likedBy.length) return 100;
+  // return (
+  //   (this.likedBy.length / (this.dislikedBy.length + this.likedBy.length) -
+  //     0.5) *
+  //   100
+  // );
+
+  return this.likedBy.length - this.dislikedBy.length;
+});
+
+VideoSchema.virtual('isWarning').get(function() {
+  // TODO to think about formula without conditions
+  return this.claimedBy.length > CLAIMS_FOR_WARNING_VIDEO;
+});
+
+VideoSchema.virtual('isBlocked').get(function() {
+  // TODO to think about formula without conditions
+  return this.claimedBy.length > CLAIMS_FOR_BLOCKING_VIDEO;
 });
 
 class VideoClass {

@@ -51,6 +51,8 @@ module.exports = {
     // Hot module replacement does not work with stateless functional components
     'react/prefer-stateless-function': 'off',
 
+    'func-names': 'off',
+
     // ESLint plugin for prettier formatting
     // https://github.com/prettier/eslint-plugin-prettier
     'prettier/prettier': [

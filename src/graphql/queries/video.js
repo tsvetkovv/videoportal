@@ -13,7 +13,12 @@ const videoQuery = {
 
     const foundVideo = await Video.findOne({ youtubeId }).populate('author');
 
-    if (user) {
+    if (!foundVideo) {
+      errors.push({
+        key: 'notFound',
+        message: `Video is not found with id: ${youtubeId}`,
+      });
+    } else if (user) {
       foundVideo.isFavorite = user.favoriteVideos.some(video =>
         video.equals(foundVideo.id),
       );

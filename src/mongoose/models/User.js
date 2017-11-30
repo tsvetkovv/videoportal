@@ -1,10 +1,6 @@
 import bcrypt from 'bcrypt-nodejs';
 import mongoose, { Schema } from 'mongoose';
-import {
-  USER_ROLES,
-  CLAIMS_FOR_BLOCKING_VIDEO,
-  CLAIMS_FOR_WARNING_VIDEO,
-} from '../../constants';
+import { USER_ROLES } from '../../constants';
 
 import Video from './Video';
 
@@ -125,25 +121,6 @@ class UserClass {
       {
         $addToSet: {
           claimedBy: this.id,
-        },
-        $set: {
-          isWarning: {
-            $cond: {
-              if: {
-                $gte: ['$claimedBy', CLAIMS_FOR_WARNING_VIDEO],
-              },
-              then: true,
-            },
-          },
-
-          isBlocked: {
-            $cond: {
-              if: {
-                $gte: ['$claimedBy', CLAIMS_FOR_BLOCKING_VIDEO],
-              },
-              then: true,
-            },
-          },
         },
       },
       {
