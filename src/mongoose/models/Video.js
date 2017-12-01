@@ -74,6 +74,19 @@ VideoSchema.virtual('isBlocked').get(function() {
 });
 
 class VideoClass {
+  async clearClaims() {
+    return this.update(
+      {
+        $set: {
+          claimedBy: [],
+        },
+      },
+      {
+        safe: true,
+      },
+    ).exec();
+  }
+
   static async commonAllVisibleQuery(additionalPipeLine = [], limit) {
     const aggregatedVideos = await this.aggregate([
       {
@@ -132,7 +145,7 @@ class VideoClass {
   static async getBlockedVideos() {
     // TODO optimizable
     return this.find({
-      $where: 'this.checkWarning()',
+      $where: `this.claimedBy.length >= ${CLAIMS_FOR_WARNING_VIDEO}`,
     });
   }
 }

@@ -21,13 +21,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    claimedVideos: [
-      {
-        type: Schema.ObjectId,
-        ref: 'Video',
-        unique: true,
-      },
-    ],
     favoriteVideos: [
       {
         type: Schema.ObjectId,
@@ -101,21 +94,6 @@ class UserClass {
   }
 
   async claim(videoId) {
-    if (this.claimedVideos.includes(videoId)) {
-      return false;
-    }
-
-    await this.update(
-      {
-        $addToSet: {
-          claimedVideos: videoId,
-        },
-      },
-      {
-        safe: true,
-      },
-    ).exec();
-
     await Video.findByIdAndUpdate(
       videoId,
       {
