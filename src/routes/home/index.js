@@ -9,12 +9,10 @@ async function action({ fetch }) {
         latestVideos: videos(orderBy: date) {
           youtubeId
           title
-          rating
         }
         popularVideos: videos(orderBy: rating) {
           youtubeId
           title
-          rating
         }
       }`,
     }),

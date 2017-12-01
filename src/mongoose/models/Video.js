@@ -81,7 +81,7 @@ class VideoClass {
       },
       {
         $addFields: {
-          rating_for_sort: {
+          rating: {
             $subtract: [
               { $add: { $size: '$likedBy' } },
               { $size: '$dislikedBy' },
@@ -91,8 +91,7 @@ class VideoClass {
       },
       {
         $match: {
-          isBlocked: false,
-          rating_for_sort: { $gte: RATING_FOR_HIDING_VIDEO },
+          rating: { $gte: RATING_FOR_HIDING_VIDEO },
         },
       },
       ...additionalPipeLine,
@@ -123,7 +122,7 @@ class VideoClass {
     return this.commonAllVisibleQuery(
       [
         {
-          $sort: { rating_for_sort: -1, date: -1 },
+          $sort: { rating: -1, date: -1 },
         },
       ],
       limit,
