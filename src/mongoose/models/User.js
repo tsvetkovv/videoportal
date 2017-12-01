@@ -25,7 +25,6 @@ const UserSchema = new Schema(
       {
         type: Schema.ObjectId,
         ref: 'Video',
-        unique: true,
       },
     ],
   },
@@ -59,12 +58,10 @@ class UserClass {
   }
 
   static getFullProfile(query) {
-    return this.findOne(query)
-      .populate('claimedVideos')
-      .populate({
-        path: 'favoriteVideos',
-        populate: { path: 'author' },
-      });
+    return this.findOne(query).populate({
+      path: 'favoriteVideos',
+      populate: { path: 'author' },
+    });
   }
 
   async addToFavorite(videoId) {
