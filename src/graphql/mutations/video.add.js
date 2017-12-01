@@ -42,6 +42,7 @@ const videoAdd = {
             video = dbVideo.toObject();
           } catch (err) {
             errors = errors.concat(parseErrors(err));
+            throw new ErrorType(errors);
           }
         }
       }

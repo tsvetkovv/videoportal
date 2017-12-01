@@ -53,6 +53,7 @@ const userRegister = {
           }
         } catch (err) {
           errors = errors.concat(parseErrors(err));
+          throw new ErrorType(errors);
         }
       }
     } else {
