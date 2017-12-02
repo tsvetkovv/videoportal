@@ -18,8 +18,8 @@ const videoClearClaims = {
         if (youtubeId.match(YOUTUBE_ID_REGEX)) {
           const foundVideo = await Video.findOne({ youtubeId });
           if (foundVideo) {
-            // TODO (meis) making clear all claims for the video
-            res = null; // TODO TBD
+            foundVideo.clearClaims();
+            res = true;
           } else {
             errors.push({
               key: 'not_found',
