@@ -10,6 +10,7 @@ const videoUnfav = {
   },
   resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
+    let res = false;
 
     if (user) {
       if (!youtubeId.match(YOUTUBE_ID_REGEX)) {
@@ -21,6 +22,7 @@ const videoUnfav = {
         const foundVideo = await Video.findOne({ youtubeId });
         if (foundVideo) {
           await user.removeFromFavorite(foundVideo.id);
+          res = true;
         } else {
           errors.push({
             key: 'not_found',
@@ -39,7 +41,7 @@ const videoUnfav = {
       throw new ErrorType(errors);
     }
 
-    return null;
+    return res;
   },
 };
 

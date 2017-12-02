@@ -11,7 +11,7 @@ const videoRemove = {
   },
   resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
-    const video = null;
+    let res = false;
 
     if (user) {
       if (youtubeId.match(YOUTUBE_ID_REGEX)) {
@@ -22,6 +22,7 @@ const videoRemove = {
             foundVideo.author.toString() === user.id.toString()
           ) {
             await Video.findByIdAndRemove(foundVideo.id);
+            res = true;
           } else {
             errors.push({
               key: 'access_denied',
@@ -51,7 +52,7 @@ const videoRemove = {
       throw new ErrorType(errors);
     }
 
-    return video;
+    return res;
   },
 };
 

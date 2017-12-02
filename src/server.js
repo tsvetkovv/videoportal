@@ -60,6 +60,7 @@ app.use(async (req, res, next) => {
         req.user = user; // eslint-disable-line no-param-reassign
       }
     } catch (e) {
+      res.clearCookie('id_token');
       console.error(e); // eslint-disable-line no-console
     }
   }

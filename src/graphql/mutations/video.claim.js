@@ -22,7 +22,8 @@ const videoClaim = {
         const foundVideo = await Video.findOne({ youtubeId });
         if (foundVideo) {
           const me = await User.findById(user.id);
-          res = await me.claim(foundVideo.id);
+          await me.claim(foundVideo.id);
+          res = true;
         } else {
           errors.push({
             key: 'not_found',

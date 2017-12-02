@@ -10,6 +10,7 @@ const videoFav = {
   },
   resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
+    let res = false;
 
     if (user) {
       if (!youtubeId.match(YOUTUBE_ID_REGEX)) {
@@ -22,6 +23,7 @@ const videoFav = {
 
         if (foundVideo) {
           await user.addToFavorite(foundVideo.id);
+          res = true;
         } else {
           errors.push({
             key: 'not_found',
@@ -40,7 +42,7 @@ const videoFav = {
       throw new ErrorType(errors);
     }
 
-    return null;
+    return res;
   },
 };
 
