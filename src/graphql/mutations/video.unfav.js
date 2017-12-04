@@ -22,7 +22,9 @@ const videoUnfav = {
       } else {
         const foundVideo = await Video.findOne({ youtubeId });
         if (foundVideo) {
-          res = await user.removeFromFavorite(foundVideo.id);
+          const video = await user.removeFromFavorite(foundVideo.id);
+          video.isFavorite = false;
+          res = video;
         } else {
           errors.push({
             key: 'not_found',

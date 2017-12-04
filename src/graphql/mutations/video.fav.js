@@ -23,7 +23,10 @@ const videoFav = {
         const foundVideo = await Video.findOne({ youtubeId });
 
         if (foundVideo) {
-          res = await user.addToFavorite(foundVideo.id);
+          const video = await user.addToFavorite(foundVideo.id);
+          // TODO: should be filled on db
+          video.isFavorite = true;
+          res = video;
         } else {
           errors.push({
             key: 'not_found',

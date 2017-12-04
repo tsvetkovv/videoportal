@@ -23,7 +23,11 @@ const videoLike = {
         const foundVideo = await Video.findOne({ youtubeId });
 
         if (foundVideo) {
-          res = await user.like(foundVideo.id);
+          const video = await user.like(foundVideo.id);
+          // TODO: should be filled on db
+          video.isLiked = true;
+          video.isDisliked = false;
+          res = video;
         } else {
           errors.push({
             key: 'not_found',

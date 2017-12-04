@@ -23,7 +23,10 @@ const videoDislike = {
         const foundVideo = await Video.findOne({ youtubeId });
 
         if (foundVideo) {
-          res = await user.dislike(foundVideo.id);
+          const video = await user.dislike(foundVideo.id);
+          video.isLiked = false;
+          video.isDisliked = true;
+          res = video;
         } else {
           errors.push({
             key: 'not_found',

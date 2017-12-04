@@ -19,7 +19,9 @@ const videoClearClaims = {
         if (youtubeId.match(YOUTUBE_ID_REGEX)) {
           const foundVideo = await Video.findOne({ youtubeId });
           if (foundVideo) {
-            res = await foundVideo.clearClaims();
+            const video = await foundVideo.clearClaims();
+            video.isClaimed = false;
+            res = video;
           } else {
             errors.push({
               key: 'not_found',
