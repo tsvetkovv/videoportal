@@ -85,62 +85,64 @@ class Video extends Component {
             <h4>Rating: {rating}</h4>
             <Link to={userLink}>{username}</Link>
           </div>
-          <div className={s.markContainer}>
-            <div className={s.btnGroup}>
-              <div
-                role="presentation"
-                onClick={() => onFav(youtubeId)}
-                className={cx(s.btn, s.btnFav)}
-              >
-                FAV
+          {currentUserId && (
+            <div className={s.markContainer}>
+              <div className={s.btnGroup}>
+                <div
+                  role="presentation"
+                  onClick={() => onFav(youtubeId)}
+                  className={cx(s.btn, s.btnFav)}
+                >
+                  FAV
+                </div>
+                <div
+                  role="presentation"
+                  onClick={() => onUnfav(youtubeId)}
+                  className={cx(s.btn, s.btnUnFav)}
+                >
+                  UNFAV
+                </div>
               </div>
-              <div
-                role="presentation"
-                onClick={() => onUnfav(youtubeId)}
-                className={cx(s.btn, s.btnUnFav)}
-              >
-                UNFAV
+              <div className={s.btnGroup}>
+                <div
+                  role="presentation"
+                  onClick={() => onLike(youtubeId)}
+                  className={cx(s.btn, s.btnLike)}
+                >
+                  Like
+                </div>
+                <div
+                  role="presentation"
+                  onClick={() => onDislike(youtubeId)}
+                  className={cx(s.btn, s.btnDisLike)}
+                >
+                  Dislike
+                </div>
               </div>
-            </div>
-            <div className={s.btnGroup}>
-              <div
-                role="presentation"
-                onClick={() => onLike(youtubeId)}
-                className={cx(s.btn, s.btnLike)}
-              >
-                Like
-              </div>
-              <div
-                role="presentation"
-                onClick={() => onDislike(youtubeId)}
-                className={cx(s.btn, s.btnDisLike)}
-              >
-                Dislike
-              </div>
-            </div>
-            {currentUserRole === 'ADMIN' && (
-              <a className={s.report}>block the video</a>
-            )}
-            <a
-              role="presentation"
-              className={s.report}
-              onClick={() => {
-                onClaim(youtubeId);
-                setModalIsOpen(true);
-              }}
-            >
-              report the video
-            </a>
-            {(currentUserId === id || currentUserRole === 'ADMIN') && (
+              {currentUserRole === 'ADMIN' && (
+                <a className={s.report}>block the video</a>
+              )}
               <a
                 role="presentation"
                 className={s.report}
-                onClick={() => onRemove(youtubeId)}
+                onClick={() => {
+                  onClaim(youtubeId);
+                  setModalIsOpen(true);
+                }}
               >
-                remove the video
+                report the video
               </a>
-            )}
-          </div>
+              {(currentUserId === id || currentUserRole === 'ADMIN') && (
+                <a
+                  role="presentation"
+                  className={s.report}
+                  onClick={() => onRemove(youtubeId)}
+                >
+                  remove the video
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );

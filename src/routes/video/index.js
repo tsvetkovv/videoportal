@@ -1,6 +1,11 @@
 import React from 'react';
 import Video from './Video';
 import Layout from '../../components/Layout';
+import {
+  videoUploaded,
+  videoChangeRating,
+  videoClaimed,
+} from '../../store/video/action';
 import history from './../../history';
 
 function removeVideoCreator(fetch, id) {
@@ -73,14 +78,16 @@ function unfavVideoCreator(fetch) {
   };
 }
 
-function likeVideoCreator(fetch) {
+function likeVideoCreator(fetch, dispatch) {
   return async youtubeId => {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
           mutation {
             videoLike(youtubeId: "${youtubeId}") {
-              rating
+              rating,
+              isLiked,
+              isDisliked
             }
           }
         `,
@@ -88,7 +95,16 @@ function likeVideoCreator(fetch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { errors, data } = await resp.json();
+    const { videoLike } = data;
+
+    dispatch(
+      videoChangeRating({
+        rating: videoLike.rating,
+        isLiked: videoLike.isLiked,
+        isDisliked: videoLike.isDisliked,
+      }),
+    );
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].state[errors[0].message]}`);
@@ -96,14 +112,16 @@ function likeVideoCreator(fetch) {
   };
 }
 
-function dislikeVideoCreator(fetch) {
+function dislikeVideoCreator(fetch, dispatch) {
   return async youtubeId => {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
         query: `
           mutation {
             videoDislike(youtubeId: "${youtubeId}") {
-              rating
+              rating,
+              isLiked,
+              isDisliked
             }
           }
         `,
@@ -111,7 +129,16 @@ function dislikeVideoCreator(fetch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { errors, data } = await resp.json();
+    const { videoDislike } = data;
+
+    dispatch(
+      videoChangeRating({
+        rating: videoDislike.rating,
+        isLiked: videoDislike.isLiked,
+        isDisliked: videoDislike.isDisliked,
+      }),
+    );
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].state[errors[0].message]}`);
@@ -119,7 +146,7 @@ function dislikeVideoCreator(fetch) {
   };
 }
 
-function claimVideoCreator(fetch) {
+function claimVideoCreator(fetch, dispatch) {
   return async youtubeId => {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
@@ -134,7 +161,14 @@ function claimVideoCreator(fetch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { errors, data } = await resp.json();
+    const { videoClaim } = data;
+
+    dispatch(
+      videoClaimed({
+        isClaimed: videoClaim.isClaimed,
+      }),
+    );
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].state[errors[0].message]}`);
@@ -156,11 +190,25 @@ async function action({ fetch, params: { youtubeId }, store }) {
           dislikedBy {id}
           isBlocked
           isWarning
+          isFavorite
+          isLiked
+          isDisliked
+          isClaimed
         }
       }`,
     }),
   });
   const { data: { video } } = await resp.json();
+
+  store.dispatch(
+    videoUploaded({
+      rating: video.rating,
+      isFavorite: video.isFavorite,
+      isLiked: video.isLiked,
+      isDisliked: video.isDisliked,
+      isClaimed: video.isClaimed,
+    }),
+  );
 
   if (!video) {
     return {
@@ -173,9 +221,9 @@ async function action({ fetch, params: { youtubeId }, store }) {
   const onRemove = user && removeVideoCreator(fetch, user.id);
   const onFav = favVideoCreator(fetch);
   const onUnfav = unfavVideoCreator(fetch);
-  const onLike = likeVideoCreator(fetch);
-  const onDislike = dislikeVideoCreator(fetch);
-  const onClaim = claimVideoCreator(fetch);
+  const onLike = likeVideoCreator(fetch, store.dispatch);
+  const onDislike = dislikeVideoCreator(fetch, store.dispatch);
+  const onClaim = claimVideoCreator(fetch, store.dispatch);
 
   return {
     chunks: ['video'],
