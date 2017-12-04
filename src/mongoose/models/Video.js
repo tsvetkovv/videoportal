@@ -85,7 +85,7 @@ class VideoClass {
         safe: true,
         new: true,
       },
-    ).exec();
+    );
   }
 
   static async commonAllVisibleQuery(additionalPipeLine = [], limit) {

@@ -10,7 +10,9 @@ function clearClaimsVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoClearClaims(youtubeId: "${youtubeId}")
+            videoClearClaims(youtubeId: "${youtubeId}") {
+              youtubeId
+            }
           }
         `,
       }),

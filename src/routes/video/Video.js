@@ -89,81 +89,85 @@ class Video extends Component {
           <div>Спасибо за обращение, Ваша жалоба принята к рассмотрению.</div>
         </Modal>
         <div className={s.container}>
-          <div>
+          <div className={s.videoRow}>
             <iframe
               title={youtubeId}
               className={s.videoContent}
               src={`https://www.youtube.com/embed/${youtubeId}`}
             />
+            {currentUserId && (
+              <div className={s.buttons}>
+                <div className={s.btnGroup}>
+                  {!isFavorite ? (
+                    <div
+                      role="presentation"
+                      onClick={() => onFav(youtubeId)}
+                      className={cx(s.btn, s.btnFav)}
+                    >
+                      FAV
+                    </div>
+                  ) : (
+                    <div
+                      role="presentation"
+                      onClick={() => onUnfav(youtubeId)}
+                      className={cx(s.btn, s.btnUnFav)}
+                    >
+                      UNFAV
+                    </div>
+                  )}
+                </div>
+                <div className={s.btnGroup}>
+                  <div
+                    role="presentation"
+                    onClick={() => onLike(youtubeId)}
+                    className={cx(s.btn, s.btnLike, { [s.shadow]: isLiked })}
+                  >
+                    Like
+                  </div>
+                  <div
+                    role="presentation"
+                    onClick={() => onDislike(youtubeId)}
+                    className={cx(s.btn, s.btnDisLike, {
+                      [s.shadow]: isDisliked,
+                    })}
+                  >
+                    Dislike
+                  </div>
+                </div>
+                <div className={s.links}>
+                  {currentUserRole === 'ADMIN' && (
+                    <a className={s.report}>block the video</a>
+                  )}
+                  {!isClaimed && (
+                    <a
+                      role="presentation"
+                      className={s.report}
+                      onClick={() => {
+                        onClaim(youtubeId);
+                        setModalIsOpen(true);
+                      }}
+                    >
+                      report the video
+                    </a>
+                  )}
+                  {(currentUserId === id || currentUserRole === 'ADMIN') && (
+                    <a
+                      role="presentation"
+                      className={s.report}
+                      onClick={() => onRemove(youtubeId)}
+                    >
+                      remove the video
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <div>
             <h2>{title}</h2>
             <h4>Rating: {rating}</h4>
             <Link to={userLink}>{username}</Link>
           </div>
-          {currentUserId && (
-            <div className={s.markContainer}>
-              <div className={s.btnGroup}>
-                {!isFavorite ? (
-                  <div
-                    role="presentation"
-                    onClick={() => onFav(youtubeId)}
-                    className={cx(s.btn, s.btnFav)}
-                  >
-                    FAV
-                  </div>
-                ) : (
-                  <div
-                    role="presentation"
-                    onClick={() => onUnfav(youtubeId)}
-                    className={cx(s.btn, s.btnUnFav)}
-                  >
-                    UNFAV
-                  </div>
-                )}
-              </div>
-              <div className={s.btnGroup}>
-                <div
-                  role="presentation"
-                  onClick={() => onLike(youtubeId)}
-                  className={cx(s.btn, s.btnLike, { [s.shadow]: isLiked })}
-                >
-                  Like
-                </div>
-                <div
-                  role="presentation"
-                  onClick={() => onDislike(youtubeId)}
-                  className={cx(s.btn, s.btnDisLike, {
-                    [s.shadow]: isDisliked,
-                  })}
-                >
-                  Dislike
-                </div>
-              </div>
-              {currentUserRole === 'ADMIN' && (
-                <a className={s.report}>block the video</a>
-              )}
-              {!isClaimed && (
-                <a
-                  role="presentation"
-                  className={s.report}
-                  onClick={() => {
-                    onClaim(youtubeId);
-                    setModalIsOpen(true);
-                  }}
-                >
-                  report the video
-                </a>
-              )}
-              {(currentUserId === id || currentUserRole === 'ADMIN') && (
-                <a
-                  role="presentation"
-                  className={s.report}
-                  onClick={() => onRemove(youtubeId)}
-                >
-                  remove the video
-                </a>
-              )}
-            </div>
-          )}
         </div>
       </div>
     );
