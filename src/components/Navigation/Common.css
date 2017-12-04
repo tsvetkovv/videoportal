@@ -1,0 +1,16 @@
+.link {
+  font-size: 1.75em; /* ~28px */
+  text-decoration: none;
+  display: inline-block;
+  padding: 3px 8px;
+}
+
+.link,
+.link:active,
+.link:visited {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.link:hover {
+  color: rgba(255, 255, 255, 1);
+}

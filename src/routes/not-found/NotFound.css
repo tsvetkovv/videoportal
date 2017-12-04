@@ -1,0 +1,13 @@
+@import '../../components/variables.css';
+
+.root {
+  flex-grow: 1;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 40px 0;
+  max-width: var(--max-content-width);
+}

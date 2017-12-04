@@ -1,0 +1,32 @@
+@import '../colors.css';
+
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  position: relative;
+  padding-bottom: 20px;
+
+  iframe {
+    border: 0;
+  }
+}
+
+.smallContainer {
+  width: 210px;
+}
+
+.largeContainer {
+  width: 420px;
+}
+
+.videoSrc {
+  width: 210px;
+  height: 118px;
+  background: var(--main);
+}
+
+.large {
+  width: 420px;
+  height: 236px;
+}
