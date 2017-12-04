@@ -83,6 +83,7 @@ class VideoClass {
       },
       {
         safe: true,
+        new: true,
       },
     ).exec();
   }

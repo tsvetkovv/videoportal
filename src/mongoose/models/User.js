@@ -65,7 +65,7 @@ class UserClass {
   }
 
   async addToFavorite(videoId) {
-    return this.update(
+    this.update(
       {
         $addToSet: {
           favoriteVideos: videoId,
@@ -75,10 +75,12 @@ class UserClass {
         safe: true,
       },
     );
+
+    return Video.findById(videoId);
   }
 
   async removeFromFavorite(videoId) {
-    return this.update(
+    await this.update(
       {
         $pull: {
           favoriteVideos: videoId,
@@ -88,10 +90,11 @@ class UserClass {
         safe: true,
       },
     );
+    return Video.findById(videoId);
   }
 
   async claim(videoId) {
-    await Video.findByIdAndUpdate(
+    return Video.findByIdAndUpdate(
       videoId,
       {
         $addToSet: {
@@ -100,10 +103,9 @@ class UserClass {
       },
       {
         safe: true,
+        new: true,
       },
     );
-
-    return true;
   }
 
   async like(videoId) {
@@ -119,6 +121,7 @@ class UserClass {
       },
       {
         safe: true,
+        new: true,
       },
     );
   }
@@ -136,6 +139,7 @@ class UserClass {
       },
       {
         safe: true,
+        new: true,
       },
     );
   }
