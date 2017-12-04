@@ -1,11 +1,10 @@
 import {
-  GraphQLString as StringType,
   GraphQLNonNull as NonNull,
+  GraphQLString as StringType,
 } from 'graphql';
 import UserType from '../types/UserType';
 import ErrorType from '../types/ErrorType';
 import { User } from '../../mongoose/models';
-import { parseErrors } from '../../mongoose/helpers';
 import { handleAuth } from '../helpers/auth';
 
 const userRegister = {
@@ -18,7 +17,7 @@ const userRegister = {
     const ONLY_NEW_USERS_CAN_REGISTER = false;
     const AUTO_SIGN_IN = true;
 
-    let errors = [];
+    const errors = [];
     let user = null;
 
     if (!req.user || !ONLY_NEW_USERS_CAN_REGISTER) {
@@ -39,21 +38,15 @@ const userRegister = {
       }
 
       if (errors.length === 0) {
-        const userFromDb = new User({
+        const userFromDb = await new User({
           username,
           password: User.generateHash(password),
-        });
+        }).save();
 
-        try {
-          await userFromDb.save();
-          user = userFromDb.toObject();
-          req.user = user;
-          if (AUTO_SIGN_IN) {
-            handleAuth(req, res);
-          }
-        } catch (err) {
-          errors = errors.concat(parseErrors(err));
-          throw new ErrorType(errors);
+        user = userFromDb.toObject();
+        req.user = user;
+        if (AUTO_SIGN_IN) {
+          handleAuth(req, res);
         }
       }
     } else {

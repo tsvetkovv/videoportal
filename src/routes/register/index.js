@@ -5,6 +5,7 @@ import {
   registerUserRequest,
   registerUserSuccess,
 } from '../../store/user/action';
+import history from '../../history';
 
 const title = 'New User Registration';
 
@@ -18,6 +19,8 @@ function registerUserCreator(fetch, dispatch) {
        mutation {
         userRegister(username: "${username}", password: "${password}") {
           username
+          id
+          role
         }
       }
       `,
@@ -25,7 +28,8 @@ function registerUserCreator(fetch, dispatch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { data, errors } = await resp.json();
+    const { userRegister } = data;
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].message}`);
@@ -33,7 +37,14 @@ function registerUserCreator(fetch, dispatch) {
       return;
     }
 
-    dispatch(registerUserSuccess());
+    dispatch(
+      registerUserSuccess({
+        username: userRegister.username,
+        id: userRegister.id,
+        role: userRegister.role,
+      }),
+    );
+    history.push('/');
   };
 }
 function action({ fetch, store: { dispatch } }) {

@@ -11,8 +11,13 @@ export const registerUserRequest = () => ({
   type: REGISTER_USER_REQUEST,
 });
 
-export const registerUserSuccess = () => ({
+export const registerUserSuccess = ({ id, username, role }) => ({
   type: REGISTER_USER_SUCCESS,
+  payload: {
+    id,
+    username,
+    role,
+  },
 });
 
 export const loginUserRequest = () => ({
