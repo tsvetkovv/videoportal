@@ -12,6 +12,13 @@ import s from './Video.css';
 const mapStateToProps = state => ({
   currentUserId: _.get(state, 'user.id'),
   currentUserRole: _.get(state, 'user.role'),
+  videoProps: {
+    rating: _.get(state, 'video.rating'),
+    isFavorite: _.get(state, 'video.isFavorite'),
+    isLiked: _.get(state, 'video.isLiked'),
+    isDisliked: _.get(state, 'video.isDisliked'),
+    isClaimed: _.get(state, 'video.isClaimed'),
+  },
 });
 
 @connect(mapStateToProps)
@@ -20,8 +27,14 @@ class Video extends Component {
   static propTypes = {
     videoData: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      rating: PropTypes.number.isRequired,
       author: PropTypes.string.isRequired,
+    }).isRequired,
+    videoProps: PropTypes.shape({
+      rating: PropTypes.number.isRequired,
+      isFavorite: PropTypes.bool.isRequired,
+      isLiked: PropTypes.bool.isRequired,
+      isDisliked: PropTypes.bool.isRequired,
+      isClaimed: PropTypes.bool.isRequired,
     }).isRequired,
     setModalIsOpen: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
@@ -37,7 +50,8 @@ class Video extends Component {
 
   render() {
     const {
-      videoData: { title, youtubeId, rating, author: { id, username } },
+      videoData: { title, youtubeId, author: { id, username } },
+      videoProps: { rating, isFavorite, isLiked, isDisliked, isClaimed },
       currentUserId,
       currentUserRole,
       setModalIsOpen,
@@ -88,33 +102,38 @@ class Video extends Component {
           {currentUserId && (
             <div className={s.markContainer}>
               <div className={s.btnGroup}>
-                <div
-                  role="presentation"
-                  onClick={() => onFav(youtubeId)}
-                  className={cx(s.btn, s.btnFav)}
-                >
-                  FAV
-                </div>
-                <div
-                  role="presentation"
-                  onClick={() => onUnfav(youtubeId)}
-                  className={cx(s.btn, s.btnUnFav)}
-                >
-                  UNFAV
-                </div>
+                {!isFavorite ? (
+                  <div
+                    role="presentation"
+                    onClick={() => onFav(youtubeId)}
+                    className={cx(s.btn, s.btnFav)}
+                  >
+                    FAV
+                  </div>
+                ) : (
+                  <div
+                    role="presentation"
+                    onClick={() => onUnfav(youtubeId)}
+                    className={cx(s.btn, s.btnUnFav)}
+                  >
+                    UNFAV
+                  </div>
+                )}
               </div>
               <div className={s.btnGroup}>
                 <div
                   role="presentation"
                   onClick={() => onLike(youtubeId)}
-                  className={cx(s.btn, s.btnLike)}
+                  className={cx(s.btn, s.btnLike, { [s.shadow]: isLiked })}
                 >
                   Like
                 </div>
                 <div
                   role="presentation"
                   onClick={() => onDislike(youtubeId)}
-                  className={cx(s.btn, s.btnDisLike)}
+                  className={cx(s.btn, s.btnDisLike, {
+                    [s.shadow]: isDisliked,
+                  })}
                 >
                   Dislike
                 </div>
@@ -122,16 +141,18 @@ class Video extends Component {
               {currentUserRole === 'ADMIN' && (
                 <a className={s.report}>block the video</a>
               )}
-              <a
-                role="presentation"
-                className={s.report}
-                onClick={() => {
-                  onClaim(youtubeId);
-                  setModalIsOpen(true);
-                }}
-              >
-                report the video
-              </a>
+              {!isClaimed && (
+                <a
+                  role="presentation"
+                  className={s.report}
+                  onClick={() => {
+                    onClaim(youtubeId);
+                    setModalIsOpen(true);
+                  }}
+                >
+                  report the video
+                </a>
+              )}
               {(currentUserId === id || currentUserRole === 'ADMIN') && (
                 <a
                   role="presentation"

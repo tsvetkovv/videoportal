@@ -1,5 +1,10 @@
 import { createReducer } from '../utils';
-import { VIDEO_UPLOADED, VIDEO_CHANGE_RATING, VIDEO_CLAIMED } from './action';
+import {
+  VIDEO_UPLOADED,
+  VIDEO_CHANGE_RATING,
+  VIDEO_CLAIMED,
+  VIDEO_CHANGE_FAV,
+} from './action';
 
 const initialState = {
   rating: null,
@@ -33,6 +38,10 @@ const actionHandlers = {
   [VIDEO_CLAIMED]: (state, { payload: { isClaimed } }) => ({
     ...state,
     isClaimed,
+  }),
+  [VIDEO_CHANGE_FAV]: (state, { payload: { isFavorite } }) => ({
+    ...state,
+    isFavorite,
   }),
 };
 

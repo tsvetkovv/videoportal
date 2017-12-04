@@ -5,6 +5,7 @@ import {
   videoUploaded,
   videoChangeRating,
   videoClaimed,
+  videoChangeFav,
 } from '../../store/video/action';
 import history from './../../history';
 
@@ -32,7 +33,7 @@ function removeVideoCreator(fetch, id) {
   };
 }
 
-function favVideoCreator(fetch) {
+function favVideoCreator(fetch, dispatch) {
   return async youtubeId => {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
@@ -47,7 +48,13 @@ function favVideoCreator(fetch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { errors, data: { videoFav } } = await resp.json();
+
+    dispatch(
+      videoChangeFav({
+        isFavorite: videoFav.isFavorite,
+      }),
+    );
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].state[errors[0].message]}`);
@@ -55,7 +62,7 @@ function favVideoCreator(fetch) {
   };
 }
 
-function unfavVideoCreator(fetch) {
+function unfavVideoCreator(fetch, dispatch) {
   return async youtubeId => {
     const resp = await fetch('/graphql', {
       body: JSON.stringify({
@@ -70,7 +77,13 @@ function unfavVideoCreator(fetch) {
       credentials: 'include',
     });
 
-    const { errors } = await resp.json();
+    const { errors, data: { videoUnfav } } = await resp.json();
+
+    dispatch(
+      videoChangeFav({
+        isFavorite: videoUnfav.isFavorite,
+      }),
+    );
 
     if (errors && errors.length) {
       alert(`Error: ${errors[0].state[errors[0].message]}`);
@@ -95,8 +108,7 @@ function likeVideoCreator(fetch, dispatch) {
       credentials: 'include',
     });
 
-    const { errors, data } = await resp.json();
-    const { videoLike } = data;
+    const { errors, data: { videoLike } } = await resp.json();
 
     dispatch(
       videoChangeRating({
@@ -129,8 +141,7 @@ function dislikeVideoCreator(fetch, dispatch) {
       credentials: 'include',
     });
 
-    const { errors, data } = await resp.json();
-    const { videoDislike } = data;
+    const { errors, data: { videoDislike } } = await resp.json();
 
     dispatch(
       videoChangeRating({
@@ -161,8 +172,7 @@ function claimVideoCreator(fetch, dispatch) {
       credentials: 'include',
     });
 
-    const { errors, data } = await resp.json();
-    const { videoClaim } = data;
+    const { errors, data: { videoClaim } } = await resp.json();
 
     dispatch(
       videoClaimed({
@@ -219,8 +229,8 @@ async function action({ fetch, params: { youtubeId }, store }) {
   const title = video.title;
   const { user } = store.getState();
   const onRemove = user && removeVideoCreator(fetch, user.id);
-  const onFav = favVideoCreator(fetch);
-  const onUnfav = unfavVideoCreator(fetch);
+  const onFav = favVideoCreator(fetch, store.dispatch);
+  const onUnfav = unfavVideoCreator(fetch, store.dispatch);
   const onLike = likeVideoCreator(fetch, store.dispatch);
   const onDislike = dislikeVideoCreator(fetch, store.dispatch);
   const onClaim = claimVideoCreator(fetch, store.dispatch);
