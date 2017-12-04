@@ -20,7 +20,7 @@ const VideoType = new GraphQLObjectType({
     dislikedBy: { type: new GraphQLList(UserType) },
     isBlocked: { type: new GraphQLNonNull(GraphQLBoolean) },
     isWarning: { type: new GraphQLNonNull(GraphQLBoolean) },
-    isFavorite: { type: new GraphQLNonNull(GraphQLBoolean) },
+    isFavorite: { type: GraphQLBoolean },
     isLiked: { type: GraphQLBoolean },
     isDisliked: { type: GraphQLBoolean },
     isClaimed: { type: GraphQLBoolean },
