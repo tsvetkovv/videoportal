@@ -1,16 +1,17 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import ErrorType from '../types/ErrorType';
+import VideoType from '../types/VideoType';
 import { Video } from '../../mongoose/models';
 import { YOUTUBE_ID_REGEX } from '../../common/helpers';
 
 const videoUnfav = {
-  type: GraphQLBoolean,
+  type: VideoType,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async ({ req: { user } }, { youtubeId }) => {
     const errors = [];
-    let res = false;
+    let res = null;
 
     if (user) {
       if (!youtubeId.match(YOUTUBE_ID_REGEX)) {
@@ -21,8 +22,7 @@ const videoUnfav = {
       } else {
         const foundVideo = await Video.findOne({ youtubeId });
         if (foundVideo) {
-          await user.removeFromFavorite(foundVideo.id);
-          res = true;
+          res = await user.removeFromFavorite(foundVideo.id);
         } else {
           errors.push({
             key: 'not_found',

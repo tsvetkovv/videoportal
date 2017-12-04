@@ -33,7 +33,9 @@ function favVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoFav(youtubeId: "${youtubeId}")
+            videoFav(youtubeId: "${youtubeId}") {
+              isFavorite
+            }
           }
         `,
       }),
@@ -54,7 +56,9 @@ function unfavVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoUnfav(youtubeId: "${youtubeId}")
+            videoUnfav(youtubeId: "${youtubeId}") {
+              isFavorite
+            }
           }
         `,
       }),
@@ -75,7 +79,9 @@ function likeVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoLike(youtubeId: "${youtubeId}")
+            videoLike(youtubeId: "${youtubeId}") {
+              rating
+            }
           }
         `,
       }),
@@ -96,7 +102,9 @@ function dislikeVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoDislike(youtubeId: "${youtubeId}")
+            videoDislike(youtubeId: "${youtubeId}") {
+              rating
+            }
           }
         `,
       }),
@@ -117,7 +125,9 @@ function claimVideoCreator(fetch) {
       body: JSON.stringify({
         query: `
           mutation {
-            videoClaim(youtubeId: "${youtubeId}")
+            videoClaim(youtubeId: "${youtubeId}") {
+              isClaimed
+            }
           }
         `,
       }),

@@ -1,10 +1,11 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import ErrorType from '../types/ErrorType';
+import VideoType from '../types/VideoType';
 import { Video } from '../../mongoose/models';
 import { YOUTUBE_ID_REGEX } from '../../common/helpers';
 
 const videoDislike = {
-  type: GraphQLBoolean,
+  type: VideoType,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
   },
@@ -22,8 +23,7 @@ const videoDislike = {
         const foundVideo = await Video.findOne({ youtubeId });
 
         if (foundVideo) {
-          await user.dislike(foundVideo.id);
-          res = true;
+          res = await user.dislike(foundVideo.id);
         } else {
           errors.push({
             key: 'not_found',

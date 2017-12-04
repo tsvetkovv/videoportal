@@ -1,10 +1,11 @@
-import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import ErrorType from '../types/ErrorType';
+import VideoType from '../types/VideoType';
 import { Video, User } from '../../mongoose/models';
 import { YOUTUBE_ID_REGEX } from '../../common/helpers';
 
 const videoClaim = {
-  type: GraphQLBoolean,
+  type: VideoType,
   args: {
     youtubeId: { type: new GraphQLNonNull(GraphQLString) },
   },
