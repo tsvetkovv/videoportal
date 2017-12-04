@@ -109,7 +109,7 @@ class UserClass {
   }
 
   async like(videoId) {
-    return Video.findOneAndUpdate(
+    return Video.findByIdAndUpdate(
       videoId,
       {
         $addToSet: {
@@ -127,7 +127,7 @@ class UserClass {
   }
 
   async dislike(videoId) {
-    return Video.findOneAndUpdate(
+    return Video.findByIdAndUpdate(
       videoId,
       {
         $addToSet: {
