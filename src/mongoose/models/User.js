@@ -65,7 +65,7 @@ class UserClass {
   }
 
   async addToFavorite(videoId) {
-    this.update(
+    await this.update(
       {
         $addToSet: {
           favoriteVideos: videoId,
