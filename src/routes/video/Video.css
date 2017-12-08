@@ -36,8 +36,6 @@
 }
 
 .videoContent {
-  width: 854px;
-  height: 480px;
   background: var(--main);
 }
 
