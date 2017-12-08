@@ -1,8 +1,8 @@
 // Set this to true for production
 const doCache = true;
-
+const MAX_AGE = 86400000;
 // Name our cache
-const CACHE_NAME = 'my-pwa-cache-v1';
+const CACHE_NAME = 'my-pwa-cache-v3';
 
 // Delete old caches that are not our current one!
 self.addEventListener('activate', event => {
@@ -25,7 +25,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('install', event => {
   if (doCache) {
     event.waitUntil(
-      caches.open(CACHE_NAME).then(cache => {
+      caches.open(CACHE_NAME).then(cache =>
         // Get the assets manifest so we can see what our js file is named
         // This is because webpack hashes it
         fetch('/assets.json')
@@ -37,9 +37,9 @@ self.addEventListener('install', event => {
             const assetsUrl = Object.keys(assets).map(key => assets[key].js);
             assetsUrl.push('/');
 
-            cache.addAll(assetsUrl);
-          });
-      }),
+            return cache.addAll(assetsUrl);
+          }),
+      ),
     );
   }
 });
@@ -49,9 +49,37 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
   if (doCache) {
     event.respondWith(
-      caches
-        .match(event.request)
-        .then(response => response || fetch(event.request)),
+      caches.match(event.request).then(cachedResponse => {
+        let lastModified;
+        let fetchRequest;
+
+        if (cachedResponse) {
+          lastModified = new Date(cachedResponse.headers.get('last-modified'));
+          // check cache validation
+          if (lastModified && Date.now() - lastModified.getTime() > MAX_AGE) {
+            fetchRequest = event.request.clone();
+            // creating new request
+            return fetch(fetchRequest)
+              .then(response => {
+                // if fails, return cached
+                if (!response || response.status !== 200) {
+                  return cachedResponse;
+                }
+                // refresh cache
+                caches
+                  .open(CACHE_NAME)
+                  .then(cache => cache.put(event.request, response.clone()));
+                // new resource
+                return response;
+              })
+              .catch(() => cachedResponse);
+          }
+          return cachedResponse;
+        }
+
+        // usual request
+        return fetch(event.request);
+      }),
     );
   }
 });
