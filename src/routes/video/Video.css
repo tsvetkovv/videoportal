@@ -36,6 +36,7 @@
 }
 
 .videoContent {
+  min-height: 50vh;
   background: var(--main);
 }
 
